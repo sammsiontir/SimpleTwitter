@@ -3,5 +3,7 @@
 
     <string name="app_name">Simple Twitter</string>
     <string name="login_label">Connect To Twitter</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
+    <string name="action_settings">Setting</string>
 
 </resources>
