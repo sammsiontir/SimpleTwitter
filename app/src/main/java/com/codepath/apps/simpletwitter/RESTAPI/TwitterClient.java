@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitter;
+package com.codepath.apps.simpletwitter.RESTAPI;
 
 import android.content.Context;
 

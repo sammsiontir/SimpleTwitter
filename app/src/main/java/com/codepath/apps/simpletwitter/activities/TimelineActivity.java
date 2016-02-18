@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitter;
+package com.codepath.apps.simpletwitter.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.adapter.TweetsArrayAdapter;
+import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
+import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +32,7 @@ import butterknife.ButterKnife;
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
-    private TweetsArrayAdatper aAdapter;
+    private TweetsArrayAdapter aAdapter;
     private ArrayList<Tweet> homeTimelineTweets;
 
     @Bind(R.id.lvHomeTimeline) ListView lvHomeTimeline;
@@ -51,7 +55,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         homeTimelineTweets = new ArrayList<>();
-        aAdapter = new TweetsArrayAdatper(this, homeTimelineTweets);
+        aAdapter = new TweetsArrayAdapter(this, homeTimelineTweets);
         lvHomeTimeline.setAdapter(aAdapter);
 
         client = TwitterApplication.getRestClient();

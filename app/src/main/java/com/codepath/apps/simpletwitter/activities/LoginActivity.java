@@ -1,10 +1,12 @@
-package com.codepath.apps.simpletwitter;
+package com.codepath.apps.simpletwitter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 // Where user will sign in
