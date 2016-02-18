@@ -46,7 +46,6 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("since_id", 1);
 		// Execute request
 		getClient().get(apiUrl, params, handler);
-
 	}
 
 	// Compose tweet

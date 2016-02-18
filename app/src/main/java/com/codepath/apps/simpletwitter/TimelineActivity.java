@@ -9,16 +9,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
+import com.codepath.apps.simpletwitter.models.Tweet;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
+    private TweetsArrayAdatper aAdapter;
+    private ArrayList<Tweet> homeTimelineTweets;
+
+    @Bind(R.id.lvHomeTimeline) ListView lvHomeTimeline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +49,11 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
 
+        ButterKnife.bind(this);
+        homeTimelineTweets = new ArrayList<>();
+        aAdapter = new TweetsArrayAdatper(this, homeTimelineTweets);
+        lvHomeTimeline.setAdapter(aAdapter);
+
         client = TwitterApplication.getRestClient();
         populateTimeline();
     }
@@ -44,11 +62,15 @@ public class TimelineActivity extends AppCompatActivity {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d("DEBUG", response.toString());
+                Gson gson = new Gson();
+                ArrayList<Tweet> updateTweets = gson.fromJson(response.toString(),
+                        new TypeToken<ArrayList<Tweet>>() {}.getType());
+                aAdapter.addAll(updateTweets);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
