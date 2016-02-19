@@ -2,6 +2,7 @@ package com.codepath.apps.simpletwitter.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,6 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by chengfu_lin on 2/18/16.
- */
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     private List<Tweet> tweets;
     View convertView;
@@ -99,6 +97,20 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             e.printStackTrace();
         }
 
+        int pos;
+        for(pos = 0; pos < relativeDate.length(); pos++) {
+            if (( relativeDate.charAt(pos) == 'y' ||
+                  relativeDate.charAt(pos) == 'm' ||
+                  relativeDate.charAt(pos) == 'd' ||
+                  relativeDate.charAt(pos) == 'h' ||
+                  relativeDate.charAt(pos) == 'm' ||
+                  relativeDate.charAt(pos) == 's')
+                 && pos + 1 < relativeDate.length()) {
+                return relativeDate.substring(0, pos+1);
+            }
+        }
+
+        Log.d("DEBUG: relativeDate = ", relativeDate);
         return relativeDate;
     }
 }

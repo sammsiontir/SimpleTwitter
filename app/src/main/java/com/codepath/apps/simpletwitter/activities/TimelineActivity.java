@@ -3,6 +3,7 @@ package com.codepath.apps.simpletwitter.activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class TimelineActivity extends AppCompatActivity {
     @Bind(R.id.rvHomeTimeline) RecyclerView rvHomeTimeline;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
+    @Bind(R.id.srHomeTimeline) SwipeRefreshLayout srHomeTimeline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,21 @@ public class TimelineActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        // Bind with swipe to refresh
+        srHomeTimeline.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                loadLatestTweets();
+            }
+        });
+        // Configure the refreshing colors
+        srHomeTimeline.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         // Initial data and adapter
         homeTimelineTweets = new ArrayList<>();
@@ -92,6 +109,8 @@ public class TimelineActivity extends AppCompatActivity {
                 // store data and notify the adapter
                 homeTimelineTweets.addAll(moreTweets);
                 tweetsAdapter.notifyDataSetChanged();
+                // clear refresh mark if calling by swipe to refresh
+                srHomeTimeline.setRefreshing(false);
             }
 
             @Override
