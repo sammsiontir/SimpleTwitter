@@ -34,6 +34,8 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.android.support:design:23.1.1'
 
+    // Recycle view
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     // rounded image
     compile 'com.makeramen:roundedimageview:2.2.1'
     // butterknife

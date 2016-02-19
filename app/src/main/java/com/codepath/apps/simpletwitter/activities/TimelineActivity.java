@@ -4,17 +4,18 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
 import com.codepath.apps.simpletwitter.R;
-import com.codepath.apps.simpletwitter.adapter.TweetsArrayAdapter;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
+import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,19 +33,21 @@ import butterknife.ButterKnife;
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
-    private TweetsArrayAdapter aAdapter;
+    private TweetsAdapter tweetsAdapter;
     private ArrayList<Tweet> homeTimelineTweets;
 
-    @Bind(R.id.lvHomeTimeline) ListView lvHomeTimeline;
+    @Bind(R.id.rvHomeTimeline) RecyclerView rvHomeTimeline;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Bind all views
+        ButterKnife.bind(this);
+        // Bind view with toolbar and floating button
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,10 +56,12 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
 
-        ButterKnife.bind(this);
+        // Initial data and adapter
         homeTimelineTweets = new ArrayList<>();
-        aAdapter = new TweetsArrayAdapter(this, homeTimelineTweets);
-        lvHomeTimeline.setAdapter(aAdapter);
+        tweetsAdapter = new TweetsAdapter(homeTimelineTweets);
+        // Bind Recycle view with tweets
+        rvHomeTimeline.setAdapter(tweetsAdapter);
+        rvHomeTimeline.setLayoutManager(new LinearLayoutManager(this));
 
         client = TwitterApplication.getRestClient();
         populateTimeline();
@@ -69,7 +74,8 @@ public class TimelineActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 ArrayList<Tweet> updateTweets = gson.fromJson(response.toString(),
                         new TypeToken<ArrayList<Tweet>>() {}.getType());
-                aAdapter.addAll(updateTweets);
+                homeTimelineTweets.addAll(updateTweets);
+                tweetsAdapter.notifyDataSetChanged();
             }
 
             @Override

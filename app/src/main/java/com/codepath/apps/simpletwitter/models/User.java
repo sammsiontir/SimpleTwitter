@@ -2,6 +2,7 @@ package com.codepath.apps.simpletwitter.models;
 
 public class User {
     public String name;
+    public String screen_name;
     public String profile_image_url;
     public boolean following;
     public int followers_count;
