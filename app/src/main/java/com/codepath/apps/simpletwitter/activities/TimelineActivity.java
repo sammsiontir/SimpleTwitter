@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
+import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.google.gson.Gson;
@@ -59,23 +61,63 @@ public class TimelineActivity extends AppCompatActivity {
         // Initial data and adapter
         homeTimelineTweets = new ArrayList<>();
         tweetsAdapter = new TweetsAdapter(homeTimelineTweets);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         // Bind Recycle view with tweets
         rvHomeTimeline.setAdapter(tweetsAdapter);
-        rvHomeTimeline.setLayoutManager(new LinearLayoutManager(this));
+        rvHomeTimeline.setLayoutManager(linearLayoutManager);
+        rvHomeTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadPreviousTweets();
+                Toast.makeText(getApplicationContext(), "Load More", Toast.LENGTH_LONG).show();
+            }
+        });
 
         client = TwitterApplication.getRestClient();
-        populateTimeline();
+        loadLatestTweets();
     }
 
-    private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+    private void loadLatestTweets() {
+        long max_id = 0;
+        long since_id = 0;
+        if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
+            since_id = tweetsAdapter.getTweets().get(0).id;
+        }
+        client.getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
-                ArrayList<Tweet> updateTweets = gson.fromJson(response.toString(),
+                ArrayList<Tweet> moreTweets = gson.fromJson(response.toString(),
                         new TypeToken<ArrayList<Tweet>>() {}.getType());
-                homeTimelineTweets.addAll(updateTweets);
+                // store data and notify the adapter
+                homeTimelineTweets.addAll(moreTweets);
                 tweetsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
+
+    private void loadPreviousTweets() {
+        long max_id = 0;
+        long since_id = 0;
+        if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
+            max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 1).id;
+        }
+        client.getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Gson gson = new Gson();
+                ArrayList<Tweet> moreTweets = gson.fromJson(response.toString(),
+                        new TypeToken<ArrayList<Tweet>>() {}.getType());
+                // store data and notify the adapter
+                homeTimelineTweets.addAll(moreTweets);
+                int curSize = tweetsAdapter.getItemCount();
+                tweetsAdapter.notifyItemRangeInserted(curSize, homeTimelineTweets.size() - 1);
             }
 
             @Override
