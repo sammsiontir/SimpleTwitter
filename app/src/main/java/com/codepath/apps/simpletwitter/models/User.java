@@ -1,12 +1,12 @@
 package com.codepath.apps.simpletwitter.models;
 
 public class User {
-    private String name;
-    private String profile_image_url;
-    private boolean following;
-    private int followers_count;
-    private int friends_count;
-    private long id;
+    public String name;
+    public String profile_image_url;
+    public boolean following;
+    public int followers_count;
+    public int friends_count;
+    public long id;
 }
 
 
