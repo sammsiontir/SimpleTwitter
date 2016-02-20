@@ -21,6 +21,7 @@ import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
 import com.codepath.apps.simpletwitter.models.Tweet;
+import com.codepath.apps.simpletwitter.models.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity implements TweetFragment.TweetComposeListener{
 
+    private User myself;
     private TwitterClient client;
     private TweetsAdapter tweetsAdapter;
     private ArrayList<Tweet> homeTimelineTweets;
@@ -94,7 +96,27 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         });
 
         client = TwitterApplication.getRestClient();
+        // Get Current User account
+        getMyAccount();
+        // Get Home Timeline
         loadLatestTweets();
+    }
+
+    private void getMyAccount() {
+        client.getMyAccount(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                myself = gson.fromJson(response.toString(), User.class);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
     }
 
     private void loadLatestTweets() {
@@ -196,7 +218,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         // pass user information to dialog
         // Todo: add user profile picture url
-        TweetFragment composeTweet = TweetFragment.newInstance("");
+        TweetFragment composeTweet = TweetFragment.newInstance(myself);
         // create compose tweet dialog
         composeTweet.show(fragmentManager, "compose_tweet");
     }

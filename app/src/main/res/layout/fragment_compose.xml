@@ -30,9 +30,10 @@
                 android:id="@+id/rlUpperBar">
 
                 <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/ivProfilePictureCompose"
+                    android:radius="10dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -50,6 +51,34 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="17dp"
                     android:layout_marginEnd="17dp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/ivProfilePictureCompose"
+                    android:layout_toEndOf="@+id/ivProfilePictureCompose">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:text="Username"
+                        android:id="@+id/tvUsernameCompose"
+                        android:textColor="@color/twitter_black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:text="\@Username"
+                        android:id="@+id/tvScreenNameCompose"
+                        android:textColor="@color/twitter_gray" />
+                </LinearLayout>
             </RelativeLayout>
 
             <RelativeLayout

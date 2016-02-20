@@ -15,7 +15,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.models.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +26,8 @@ public class TweetFragment extends DialogFragment {
     private static final int TWEET_MAX_LENGTH = 140;
 
     @Bind(R.id.ivProfilePictureCompose) ImageView ivProfilePictureCompose;
+    @Bind(R.id.tvUsernameCompose) TextView tvUsernameCompose;
+    @Bind(R.id.tvScreenNameCompose) TextView tvScreenNameCompose;
     @Bind(R.id.ibCancelCompose) ImageButton ibCancelCompose;
     @Bind(R.id.etComposeText) EditText etComposeText;
     @Bind(R.id.tvCharLeft) TextView tvCharLeft;
@@ -32,11 +36,11 @@ public class TweetFragment extends DialogFragment {
     public TweetFragment() {
     }
 
-    public static TweetFragment newInstance(String profilePictureUrl) {
+    public static TweetFragment newInstance(User myself) {
         TweetFragment compose = new TweetFragment();
         // collect passing data
         Bundle data = new Bundle();
-        data.putString("thumbnail", profilePictureUrl);
+        data.putParcelable("user", myself);
         // prepare return object
         compose.setArguments(data);
         return compose;
@@ -58,10 +62,16 @@ public class TweetFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Fetch passing data from activity
-        String profilePictureUrl = getArguments().getString("thumbnail");
+        User user = getArguments().getParcelable("user");
 
-        // Bind Profile picture
-        // Todo: add profile picture
+        // Bind User information
+        // Todo: radius the corner
+        Glide.with(view.getContext())
+                .load(user.profile_image_url)
+                .fitCenter()
+                .into(ivProfilePictureCompose);
+        tvUsernameCompose.setText(user.name);
+        tvScreenNameCompose.setText(user.screen_name);
 
         // Set Text field
         setComposeTextField();
