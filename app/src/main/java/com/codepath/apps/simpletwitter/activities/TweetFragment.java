@@ -2,9 +2,13 @@ package com.codepath.apps.simpletwitter.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TweetFragment extends DialogFragment {
+    private static final int TWEET_MAX_LENGTH = 140;
 
     @Bind(R.id.ivProfilePictureCompose) ImageView ivProfilePictureCompose;
     @Bind(R.id.ibCancelCompose) ImageButton ibCancelCompose;
@@ -59,16 +64,17 @@ public class TweetFragment extends DialogFragment {
         // Todo: add profile picture
 
         // Set Text field
-        //etComposeText.requestFocus();
-        //getDialog().getWindow().setSoftInputMode(
-        //        WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        setComposeTextField();
 
         // Bind Tweet button
+        btnTweet.setEnabled(false);
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // remain characters must be in the range for submit tweet
+                String tweetText = etComposeText.getText().toString();
                 TweetComposeListener listener = (TweetComposeListener) getActivity();
-                listener.onClickTweet(etComposeText.getText().toString());
+                listener.onClickTweet(tweetText);
                 dismiss();
             }
         });
@@ -93,4 +99,35 @@ public class TweetFragment extends DialogFragment {
         void onClickTweet(String inputText);
     }
 
+    private void setComposeTextField() {
+        // call virtual keyboard
+        etComposeText.requestFocus();
+        getDialog().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        // calculate remain characters
+        etComposeText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int remain = TWEET_MAX_LENGTH - count;
+                if (remain <= 0 || remain == TWEET_MAX_LENGTH) {
+                    Log.d("DEBUG_false", Integer.toString(remain));
+                    btnTweet.setEnabled(false);
+                } else {
+                    Log.d("DEBUG_true", Integer.toString(remain));
+                    btnTweet.setEnabled(true);
+                }
+                tvCharLeft.setText(Integer.toString(remain));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 }

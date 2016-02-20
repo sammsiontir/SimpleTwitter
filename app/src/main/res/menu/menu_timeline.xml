@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/action_tweet"
-        android:icon="@drawable/tweet_icon"
+        android:icon="@drawable/ic_tweet_icon"
         android:orderInCategory="100"
         android:title="Tweet"
         app:showAsAction="always" />
