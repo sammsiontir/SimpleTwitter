@@ -55,7 +55,8 @@ public class TimelineActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                postTweet("Add default post");
+                Snackbar.make(view, "Add default post", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -66,6 +67,7 @@ public class TimelineActivity extends AppCompatActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
+                homeTimelineTweets.clear();
                 loadLatestTweets();
             }
         });
@@ -116,7 +118,8 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
             }
         });
     }
@@ -142,7 +145,29 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
+    }
+
+    private void postTweet(String status) {
+        client.postTweet(status, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
+                Log.d("DEBUG", response.toString());
+                // update timeline
+                homeTimelineTweets.add(0,tweet);
+                tweetsAdapter.notifyItemInserted(0);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
             }
         });
     }

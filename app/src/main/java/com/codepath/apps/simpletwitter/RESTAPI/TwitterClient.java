@@ -28,7 +28,8 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_SECRET = "HOnHnaeuB4OAkcVYgbfONxrJdOjv6mjI0WWyC74EukWOeSM02Q";
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
-	public static final String HOMETIMELINE_URL = "statuses/home_timeline.json";
+	public static final String GET_HOMETIMELINE_URL = "statuses/home_timeline.json";
+	public static final String POST_UPDATE_URL      = "statuses/update.json";
 	public static final String PARAM_COUNT = "25";
 
 
@@ -43,7 +44,7 @@ public class TwitterClient extends OAuthBaseClient {
 	 *     since_id=1 (return all tweets)
 	*/
 	public void getHomeTimeline(long max_id, long since_id, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl(HOMETIMELINE_URL);
+		String apiUrl = getApiUrl(GET_HOMETIMELINE_URL);
 		// Specify params
 		RequestParams params = new RequestParams();
 		params.put("count", PARAM_COUNT);
@@ -56,7 +57,15 @@ public class TwitterClient extends OAuthBaseClient {
 		// Execute request
 		getClient().get(apiUrl, params, handler);
 	}
-	// Compose tweet
+	// Post new tweet
+	public void postTweet(String status, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(POST_UPDATE_URL);
+		// Specify params
+		RequestParams params = new RequestParams();
+		params.put("status", status);
+		// Execute request
+		getClient().post(apiUrl, params, handler);
+	}
 
 }
 
