@@ -31,6 +31,10 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String GET_HOMETIMELINE_URL = "statuses/home_timeline.json";
 	public static final String GET_MY_ACCOUNT_URL   = "account/verify_credentials.json";
 	public static final String POST_UPDATE_URL      = "statuses/update.json";
+	public static final String POST_RETWEET_URL     = "statuses/retweet/:id.json";
+	public static final String POST_UNRETWEET_URL   = "statuses/unretweet/:id.json";
+	public static final String POST_FAVORITE_URL    = "favorites/create.json";
+	public static final String POST_UNFAVORITE_URL  = "favorites/destroy.json";
 	public static final String PARAM_COUNT = "25";
 
 
@@ -65,15 +69,57 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	// Post new tweet
-	public void postTweet(String status, AsyncHttpResponseHandler handler) {
+	public void postStatusUpdate(String status, long id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl(POST_UPDATE_URL);
 		// Specify params
 		RequestParams params = new RequestParams();
 		params.put("status", status);
+		if(id > 0) {
+			params.put("in_reply_to_status_id", id);
+		}
 		// Execute request
 		getClient().post(apiUrl, params, handler);
 	}
 
+	// Post retweet
+	public void postRetweet(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(POST_RETWEET_URL);
+		// Specify params
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		// Execute request
+		getClient().post(apiUrl, params, handler);
+	}
+
+	// Post un-retweet
+	public void postUnRetweet(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(POST_UNRETWEET_URL);
+		// Specify params
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		// Execute request
+		getClient().post(apiUrl, params, handler);
+	}
+
+	// Post favorite
+	public void postFavorite(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(POST_FAVORITE_URL);
+		// Specify params
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		// Execute request
+		getClient().post(apiUrl, params, handler);
+	}
+
+	// Post un-favorite
+	public void postUnFavorite(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(POST_UNFAVORITE_URL);
+		// Specify params
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		// Execute request
+		getClient().post(apiUrl, params, handler);
+	}
 }
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

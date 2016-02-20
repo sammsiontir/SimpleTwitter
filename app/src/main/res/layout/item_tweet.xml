@@ -114,11 +114,11 @@
                     android:paddingTop="@dimen/view_vertical_margin" >
 
                     <ImageButton
-                        android:layout_width="@dimen/tweet_button_size_smaller"
-                        android:layout_height="@dimen/tweet_button_size_smaller"
+                        android:layout_width="@dimen/tweet_button_size"
+                        android:layout_height="@dimen/tweet_button_size"
                         android:id="@+id/ibReply"
-                        android:background="@drawable/ic_reply_aab8c2"
-                        android:scaleType="fitCenter"
+                        android:background="@android:drawable/ic_menu_revert"
+                        android:backgroundTint="#aab8c2"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true" />

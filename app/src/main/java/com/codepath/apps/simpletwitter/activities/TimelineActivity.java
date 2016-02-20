@@ -130,7 +130,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
                 ArrayList<Tweet> moreTweets = gson.fromJson(response.toString(),
-                        new TypeToken<ArrayList<Tweet>>() {}.getType());
+                        new TypeToken<ArrayList<Tweet>>() {
+                        }.getType());
                 // store data and notify the adapter
                 homeTimelineTweets.addAll(moreTweets);
                 tweetsAdapter.notifyDataSetChanged();
@@ -175,7 +176,28 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
     }
 
     private void postTweet(String status) {
-        client.postTweet(status, new JsonHttpResponseHandler() {
+        client.postStatusUpdate(status, 0, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
+                Log.d("DEBUG", response.toString());
+                // update timeline
+                homeTimelineTweets.add(0, tweet);
+                tweetsAdapter.notifyItemInserted(0);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
+    }
+
+    private void replyTweet(String status, long id) {
+        client.postStatusUpdate(status, id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
