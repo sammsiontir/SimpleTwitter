@@ -3,6 +3,7 @@ package com.codepath.apps.simpletwitter.activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements TweetFragment.TweetComposeListener{
 
     private TwitterClient client;
     private TweetsAdapter tweetsAdapter;
@@ -159,7 +160,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
                 // update timeline
-                homeTimelineTweets.add(0,tweet);
+                homeTimelineTweets.add(0, tweet);
                 tweetsAdapter.notifyItemInserted(0);
             }
 
@@ -182,10 +183,26 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_tweet) {
+            composeTweet();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void composeTweet() {
+        // create fragment manager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // pass user information to dialog
+        // Todo: add user profile picture url
+        TweetFragment composeTweet = TweetFragment.newInstance("");
+        // create compose tweet dialog
+        composeTweet.show(fragmentManager, "compose_tweet");
+    }
+
+    @Override
+    public void onClickTweet(String inputText) {
+        postTweet(inputText);
     }
 }

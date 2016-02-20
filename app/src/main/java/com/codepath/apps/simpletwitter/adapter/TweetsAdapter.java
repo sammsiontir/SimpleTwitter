@@ -65,7 +65,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        @Bind(R.id.ivProfilePicture) ImageView ivProfilePicture;
+        @Bind(R.id.ivProfilePictureCompose) ImageView ivProfilePicture;
         @Bind(R.id.tvUsername) TextView tvUsername;
         @Bind(R.id.tvScreenName) TextView tvScreenName;
         @Bind(R.id.tvCreateTime) TextView tvCreateTime;

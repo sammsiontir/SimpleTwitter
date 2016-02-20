@@ -30,7 +30,7 @@
                 android:paddingLeft="@dimen/view_horizontal_margin"
                 android:paddingRight="@dimen/view_horizontal_margin"
                 android:paddingTop="@dimen/view_vertical_margin"
-                android:id="@+id/ivProfilePicture"
+                android:id="@+id/ivProfilePictureCompose"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
@@ -40,8 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/ivProfilePicture"
-                android:layout_toEndOf="@+id/ivProfilePicture">
+                android:layout_toRightOf="@+id/ivProfilePictureCompose"
+                android:layout_toEndOf="@+id/ivProfilePictureCompose">
 
                 <RelativeLayout
                     android:layout_width="match_parent"

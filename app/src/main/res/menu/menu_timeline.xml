@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.apps.simpletwitter">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_tweet"
+        android:icon="@drawable/tweet_icon"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="Tweet"
+        app:showAsAction="always" />
 </menu>
