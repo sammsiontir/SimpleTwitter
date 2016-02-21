@@ -3,7 +3,11 @@ package com.codepath.apps.simpletwitter.models;
 
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+
 public class Tweet {
+    public static final transient HashMap<Long, Tweet> hashTweets = new HashMap<>();
+
     public String created_at;
     public int favorite_count;
     public boolean favorited;
@@ -25,6 +29,9 @@ public class Tweet {
 
     // Update Database
     public void update() {
+        // update hashTweets
+        hashTweets.put(this.id, this);
+        // update DB
         TweetDB updateTweetDB = convertToDB();
         updateTweetDB.save();
     }
@@ -37,6 +44,32 @@ public class Tweet {
         tweetDB.JSONObject = gson.toJson(this);
         return tweetDB;
     }
+
+    // update status
+    public void retweet() {
+        this.retweet_count++;
+        this.retweeted = true;
+        this.update();
+    }
+
+    public void unretweet() {
+        this.retweet_count--;
+        this.retweeted = false;
+        this.update();
+    }
+
+    public void favorite() {
+        this.favorite_count++;
+        this.favorited = true;
+        this.update();
+    }
+
+    public void unfavorite() {
+        this.favorite_count--;
+        this.favorited = false;
+        this.update();
+    }
+
 }
 
 

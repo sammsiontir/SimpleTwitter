@@ -27,15 +27,16 @@ public class TweetDB extends Model {
         this.JSONObject = JSONObject;
     }
 
-    public static List<Tweet> getRecentTweets(Integer limit) {
+    public static List<Long> getRecentTweets(Integer limit) {
         List<TweetDB> tweetDBs = new Select().from(TweetDB.class)
                 .orderBy("TweetId DESC")
                 .limit(limit.toString()).execute();
-        ArrayList<Tweet> tweets = new ArrayList<>();
+        ArrayList<Long> tweets = new ArrayList<>();
         for(int i = 0; i < tweetDBs.size(); i++) {
             Gson gson = new Gson();
             Tweet tweet = gson.fromJson(tweetDBs.get(i).JSONObject, Tweet.class);
-            tweets.add(tweet);
+            tweets.add(tweet.id);
+            Tweet.hashTweets.put(tweet.id, tweet);
         }
         return tweets;
     }

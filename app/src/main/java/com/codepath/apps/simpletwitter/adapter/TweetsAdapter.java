@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.R;
@@ -28,16 +29,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
-    public List<Tweet> tweets;
-    private Tweet tweet;
-    private int position;
+    public List<Long> tweets;
     View convertView;
 
-    public TweetsAdapter(List<Tweet> tweets) {
+    public TweetsAdapter(List<Long> tweets) {
         this.tweets = tweets;
     }
 
-    public List<Tweet> getTweets() {
+    public List<Long> getTweets() {
         return tweets;
     }
 
@@ -50,10 +49,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int pos) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         // Get data from current position
-        tweet = tweets.get(pos);
-        position = pos;
+        final Long tweetId = tweets.get(position);
+        Tweet tweet = Tweet.hashTweets.get(tweetId);
 
         // Bind data with views
         Glide.with(convertView.getContext())
@@ -77,27 +76,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         // Bind Retweet button
         holder.ibRetweet.setEnabled(true);
         holder.ibRetweet.setSelected(tweet.retweeted);
-        holder.ibRetweet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Trigger retweet
-                if(tweet.retweeted) {
-                    postUnRetweet(tweet.id);
-                    v.setSelected(false);
-                }
-                else {
-                    postRetweet(tweet.id);
-                    v.setSelected(true);
-                }
-            }
-        });
-        holder.ibFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Trigger favorite
-            }
-        });
+        holder.tvRetweetCount.setSelected(tweet.retweeted);
+        holder.ibRetweet.setOnClickListener(new BtnRetweetOnClickListener(tweetId, holder));
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -178,15 +161,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     // REST API
     private void postRetweet(long id) {
+        Toast.makeText(convertView.getContext(), "Retweet", Toast.LENGTH_LONG).show();
         TwitterApplication.getRestClient().postRetweet(id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
-                // update timeline
-                tweets.set(position, tweet);
-                notifyItemChanged(position);
             }
 
             @Override
@@ -199,15 +180,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     private void postUnRetweet(long id) {
+        Toast.makeText(convertView.getContext(), "Un-retweet", Toast.LENGTH_LONG).show();
         TwitterApplication.getRestClient().postUnRetweet(id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
-                // update timeline
-                tweets.set(position, tweet);
-                notifyItemChanged(position);
             }
 
             @Override
@@ -217,5 +196,63 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 Log.e("REST_API_ERROR", errorResponse.toString());
             }
         });
+    }
+
+    private void getTweet(long id, final int position) {
+        Toast.makeText(convertView.getContext(), "Fetch single tweet", Toast.LENGTH_LONG).show();
+        TwitterApplication.getRestClient().getMyAccount(id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
+                Log.d("DEBUG", response.toString());
+                // update timeline
+                tweet.update();
+                notifyItemChanged(position);
+                // update DB
+                tweet.update();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
+    }
+
+    public class BtnRetweetOnClickListener implements View.OnClickListener {
+        private Long tweetId;
+        private TweetsAdapter.ViewHolder holder;
+
+        public BtnRetweetOnClickListener(Long tweetId, TweetsAdapter.ViewHolder holder) {
+            this.tweetId = tweetId;
+            this.holder = holder;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (Tweet.hashTweets.get(this.tweetId).retweeted) {
+                // update server
+                postUnRetweet(this.tweetId);
+                // update local database
+                Tweet.hashTweets.get(this.tweetId).unretweet();
+                // update views
+                holder.ibRetweet.setSelected(false);
+                holder.tvRetweetCount.setSelected(false);
+                holder.tvRetweetCount.setText(Integer.toString(Tweet.hashTweets.get(this.tweetId).retweet_count));
+
+            } else {
+                // update server
+                postRetweet(this.tweetId);
+                // update local database
+                Tweet.hashTweets.get(this.tweetId).retweet();
+                // update views
+                holder.ibRetweet.setSelected(true);
+                holder.tvRetweetCount.setSelected(true);
+                holder.tvRetweetCount.setText(Integer.toString(Tweet.hashTweets.get(this.tweetId).retweet_count));
+            }
+        }
     }
 }

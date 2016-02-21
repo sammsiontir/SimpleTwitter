@@ -130,7 +130,8 @@
                         android:layout_toRightOf="@+id/ibReply"
                         android:layout_toEndOf="@+id/ibReply"
                         android:layout_marginLeft="60dp"
-                        android:layout_marginStart="60dp">
+                        android:layout_marginStart="60dp"
+                        android:id="@+id/rlRetweet">
 
                         <ImageButton
                             android:layout_width="@dimen/tweet_button_size"
@@ -147,10 +148,8 @@
                             android:layout_height="wrap_content"
                             android:text="2237"
                             android:id="@+id/tvRetweetCount"
-                            android:textColor="@color/twitter_gray"
-                            android:layout_centerVertical="true"
+                            android:textColor="@drawable/btn_retweet_textcolor"
                             android:layout_toRightOf="@+id/ibRetweet"
-                            android:layout_toEndOf="@+id/ibRetweet"
                             android:layout_marginLeft="@dimen/count_margin"
                             android:layout_marginStart="@dimen/count_margin" />
                     </RelativeLayout>
@@ -162,7 +161,8 @@
                         android:layout_toRightOf="@+id/ibReply"
                         android:layout_toEndOf="@+id/ibReply"
                         android:layout_marginLeft="160dp"
-                        android:layout_marginStart="160dp">
+                        android:layout_marginStart="160dp"
+                        android:id="@+id/rlFavorite">
 
                         <ImageButton
                             android:layout_width="@dimen/tweet_button_size"

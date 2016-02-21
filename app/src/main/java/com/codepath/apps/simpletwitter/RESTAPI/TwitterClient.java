@@ -29,6 +29,7 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
 	public static final String GET_HOMETIMELINE_URL = "statuses/home_timeline.json";
+	public static final String GET_TWEET_URL        = "statuses/show.json";
 	public static final String GET_MY_ACCOUNT_URL   = "account/verify_credentials.json";
 	public static final String POST_UPDATE_URL      = "statuses/update.json";
 	public static final String POST_RETWEET_URL     = "statuses/retweet/"; // + id + JSON
@@ -63,6 +64,14 @@ public class TwitterClient extends OAuthBaseClient {
 		// Execute request
 		getClient().get(apiUrl, params, handler);
 	}
+	// Get a single tweet
+	public void getMyAccount(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(GET_TWEET_URL);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		getClient().get(apiUrl, params, handler);
+	}
+
 	// Get my account
 	public void getMyAccount(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl(GET_MY_ACCOUNT_URL);

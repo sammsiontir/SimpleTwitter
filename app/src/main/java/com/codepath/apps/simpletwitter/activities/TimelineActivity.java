@@ -42,7 +42,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
     private User myself;
     private TwitterClient client;
     private TweetsAdapter tweetsAdapter;
-    private ArrayList<Tweet> homeTimelineTweets;
+    private ArrayList<Long> homeTimelineTweets;
 
     @Bind(R.id.rvHomeTimeline) RecyclerView rvHomeTimeline;
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -100,7 +100,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         // Get Current User account
         getMyAccount();
         // Get Home timeline
-        List<Tweet> queryResults = TweetDB.getRecentTweets(100);
+        List<Long> queryResults = TweetDB.getRecentTweets(100);
         if(queryResults != null && !queryResults.isEmpty()) {
             homeTimelineTweets.addAll(queryResults);
             tweetsAdapter.notifyDataSetChanged();
@@ -112,6 +112,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
     }
 
     private void clearAllTweets() {
+        // clear hashTweets
+        Tweet.hashTweets.clear();
         // clear all tweets in DB
         new Delete().from(TweetDB.class).execute();
         // clear all tweets in local data member
@@ -140,7 +142,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         long max_id = 0;
         long since_id = 0;
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
-            since_id = tweetsAdapter.getTweets().get(0).id;
+            since_id = tweetsAdapter.getTweets().get(0);
         }
         client.getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
             @Override
@@ -149,13 +151,15 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 ArrayList<Tweet> moreTweets = gson.fromJson(response.toString(),
                         new TypeToken<ArrayList<Tweet>>() {
                         }.getType());
-                // store data and notify the adapter
-                homeTimelineTweets.addAll(moreTweets);
-                tweetsAdapter.notifyDataSetChanged();
-                // update moreTweets to DB
+
                 for (int i = 0; i < moreTweets.size(); i++) {
+                    // update moreTweets to DB
                     moreTweets.get(i).update();
+                    // store data
+                    homeTimelineTweets.add(moreTweets.get(i).id);
                 }
+                // notify the adapter
+                tweetsAdapter.notifyDataSetChanged();
                 // clear refresh mark if calling by swipe to refresh
                 srHomeTimeline.setRefreshing(false);
             }
@@ -173,7 +177,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         long max_id = 0;
         long since_id = 0;
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
-            max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 1).id;
+            max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 1);
         }
         client.getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
             @Override
@@ -182,14 +186,16 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 ArrayList<Tweet> moreTweets = gson.fromJson(response.toString(),
                         new TypeToken<ArrayList<Tweet>>() {
                         }.getType());
-                // store data and notify the adapter
-                homeTimelineTweets.addAll(moreTweets);
+
+                for (int i = 0; i < moreTweets.size(); i++) {
+                    // update moreTweets to DB
+                    moreTweets.get(i).update();
+                    // store data and notify the adapter
+                    homeTimelineTweets.add(moreTweets.get(i).id);
+                }
+                // notify the adapter
                 int curSize = tweetsAdapter.getItemCount();
                 tweetsAdapter.notifyItemRangeInserted(curSize, homeTimelineTweets.size() - 1);
-                // update moreTweets to DB
-                for (int i = 0; i < moreTweets.size(); i++) {
-                    moreTweets.get(i).update();
-                }
             }
 
             @Override
@@ -208,8 +214,10 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
+                // update DB
+                tweet.update();
                 // update timeline
-                homeTimelineTweets.add(0, tweet);
+                homeTimelineTweets.add(0, tweet.id);
                 tweetsAdapter.notifyItemInserted(0);
                 // update moreTweets to DB
                 tweet.update();
@@ -231,8 +239,10 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
+                // update DB
+                tweet.update();
                 // update timeline
-                homeTimelineTweets.add(0, tweet);
+                homeTimelineTweets.add(0, tweet.id);
                 tweetsAdapter.notifyItemInserted(0);
             }
 
