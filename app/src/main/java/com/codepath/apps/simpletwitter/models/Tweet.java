@@ -1,6 +1,8 @@
 package com.codepath.apps.simpletwitter.models;
 
 
+import com.google.gson.Gson;
+
 public class Tweet {
     public String created_at;
     public int favorite_count;
@@ -19,6 +21,23 @@ public class Tweet {
     public Tweet retweeted_status;
 
     // Entities - enhance feature
+
+
+    // Update Database
+    public void update() {
+        TweetDB updateTweetDB = convertToDB();
+        updateTweetDB.save();
+    }
+
+    public TweetDB convertToDB() {
+        TweetDB tweetDB = new TweetDB();
+        tweetDB.created_at = this.created_at;
+        tweetDB.id = this.id;
+
+        Gson gson = new Gson();
+        tweetDB.JSONObject = gson.toJson(this);
+        return tweetDB;
+    }
 }
 
 

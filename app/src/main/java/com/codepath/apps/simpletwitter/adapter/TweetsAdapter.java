@@ -97,20 +97,43 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             e.printStackTrace();
         }
 
+        // Special Case: Yesterday
+        if (relativeDate.equals("Yesterday")) {
+            String res = "1 d";
+            Log.d("DEBUG: relativeDate = ", relativeDate);
+            Log.d("DEBUG: relativeDate = ", res);
+            return res;
+        }
+
+        // Case: X days ago
+        //       X hours ago
+        //       X minutes ago
+        //       X seconds ago
         int pos;
         for(pos = 0; pos < relativeDate.length(); pos++) {
-            if (( relativeDate.charAt(pos) == 'y' ||
-                  relativeDate.charAt(pos) == 'm' ||
-                  relativeDate.charAt(pos) == 'd' ||
+            if (( relativeDate.charAt(pos) == 'd' ||
                   relativeDate.charAt(pos) == 'h' ||
                   relativeDate.charAt(pos) == 'm' ||
                   relativeDate.charAt(pos) == 's')
                  && pos + 1 < relativeDate.length()) {
+                Log.d("DEBUG: relativeDate = ", relativeDate);
+                Log.d("DEBUG: relativeDate = ", relativeDate.substring(0, pos+1));
                 return relativeDate.substring(0, pos+1);
             }
         }
 
+        // Case: more than 7 days ago
+        SimpleDateFormat fromUser = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yy");
+        String reformattedStr = "";
+        try {
+            reformattedStr = myFormat.format(fromUser.parse(relativeDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Log.d("DEBUG: relativeDate = ", relativeDate);
-        return relativeDate;
+        Log.d("DEBUG: reformatted = ", reformattedStr);
+        return reformattedStr;
     }
 }

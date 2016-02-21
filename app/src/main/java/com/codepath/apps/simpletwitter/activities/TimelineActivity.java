@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.activeandroid.query.Delete;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
 import com.codepath.apps.simpletwitter.models.Tweet;
+import com.codepath.apps.simpletwitter.models.TweetDB;
 import com.codepath.apps.simpletwitter.models.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,8 +61,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postTweet("Add default post");
-                Snackbar.make(view, "Add default post", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Get data from DB", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -70,7 +72,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                homeTimelineTweets.clear();
+                clearAllTweets();
                 loadLatestTweets();
             }
         });
@@ -98,8 +100,23 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         client = TwitterApplication.getRestClient();
         // Get Current User account
         getMyAccount();
-        // Get Home Timeline
-        loadLatestTweets();
+        // Get Home timeline
+        List<Tweet> queryResults = TweetDB.getRecentTweets(100);
+        if(queryResults != null && !queryResults.isEmpty()) {
+            homeTimelineTweets.addAll(queryResults);
+            tweetsAdapter.notifyDataSetChanged();
+            Toast.makeText(this, "Load from DB", Toast.LENGTH_LONG).show();
+        }
+        else {
+            loadLatestTweets();
+        }
+    }
+
+    private void clearAllTweets() {
+        // clear all tweets in DB
+        new Delete().from(TweetDB.class).execute();
+        // clear all tweets in local data member
+        homeTimelineTweets.clear();
     }
 
     private void getMyAccount() {
@@ -108,6 +125,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
                 myself = gson.fromJson(response.toString(), User.class);
+                //myself.update();
             }
 
             @Override
@@ -135,6 +153,10 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 // store data and notify the adapter
                 homeTimelineTweets.addAll(moreTweets);
                 tweetsAdapter.notifyDataSetChanged();
+                // update moreTweets to DB
+                for (int i = 0; i < moreTweets.size(); i++) {
+                    moreTweets.get(i).update();
+                }
                 // clear refresh mark if calling by swipe to refresh
                 srHomeTimeline.setRefreshing(false);
             }
@@ -164,6 +186,10 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 homeTimelineTweets.addAll(moreTweets);
                 int curSize = tweetsAdapter.getItemCount();
                 tweetsAdapter.notifyItemRangeInserted(curSize, homeTimelineTweets.size() - 1);
+                // update moreTweets to DB
+                for (int i = 0; i < moreTweets.size(); i++) {
+                    moreTweets.get(i).update();
+                }
             }
 
             @Override
@@ -185,6 +211,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
                 // update timeline
                 homeTimelineTweets.add(0, tweet);
                 tweetsAdapter.notifyItemInserted(0);
+                // update moreTweets to DB
+                tweet.update();
             }
 
             @Override
@@ -239,7 +267,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         // create fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         // pass user information to dialog
-        // Todo: add user profile picture url
         TweetFragment composeTweet = TweetFragment.newInstance(myself);
         // create compose tweet dialog
         composeTweet.show(fragmentManager, "compose_tweet");
