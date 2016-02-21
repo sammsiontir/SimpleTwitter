@@ -28,7 +28,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
+public abstract class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     public List<Long> tweets;
     View convertView;
 
@@ -70,7 +70,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         holder.ibReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open reply dialog
+                onClickReply(tweetId);
             }
         });
         // Bind Retweet button
@@ -268,6 +268,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         });
     }
 
+    // Button OnClick Listener
     public class BtnRetweetOnClickListener implements View.OnClickListener {
         private Long tweetId;
         private TweetsAdapter.ViewHolder holder;
@@ -302,7 +303,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
     }
 
-    // Button OnClick Listener
     public class BtnFavoriteOnClickListener implements View.OnClickListener {
         private Long tweetId;
         private TweetsAdapter.ViewHolder holder;
@@ -336,4 +336,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             }
         }
     }
+
+    public abstract void onClickReply(Long tweetId);
+
+
 }

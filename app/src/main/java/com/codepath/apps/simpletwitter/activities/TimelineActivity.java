@@ -38,7 +38,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TimelineActivity extends AppCompatActivity implements TweetFragment.TweetComposeListener{
+public class TimelineActivity extends AppCompatActivity
+        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener  {
     private User myself;
     private TwitterClient client;
     private TweetsAdapter tweetsAdapter;
@@ -83,7 +84,12 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
 
         // Initial data and adapter
         homeTimelineTweets = new ArrayList<>();
-        tweetsAdapter = new TweetsAdapter(homeTimelineTweets);
+        tweetsAdapter = new TweetsAdapter(homeTimelineTweets) {
+            @Override
+            public void onClickReply(Long tweetId) {
+                replyTweet(myself, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text);
+            }
+        };
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         // Bind Recycle view with tweets
         rvHomeTimeline.setAdapter(tweetsAdapter);
@@ -233,7 +239,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
     }
 
     private void replyTweet(String status, long id) {
-        client.postStatusUpdate(status, id, new JsonHttpResponseHandler() {
+        Toast.makeText(this, "Reply", Toast.LENGTH_LONG).show();
+        TwitterApplication.getRestClient().postStatusUpdate(status, id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
@@ -254,6 +261,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -282,8 +290,22 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
         composeTweet.show(fragmentManager, "compose_tweet");
     }
 
+    private void replyTweet(User sender, User recipient, String status) {
+        // create fragment manager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // pass user information to dialog
+        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status);
+        // create compose tweet dialog
+        replyTweet.show(fragmentManager, "reply_tweet");
+    }
+
     @Override
     public void onClickTweet(String inputText) {
+        postTweet(inputText);
+    }
+
+    @Override
+    public void onClickReply(String inputText) {
         postTweet(inputText);
     }
 }
