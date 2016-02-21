@@ -11,8 +11,6 @@ import java.util.List;
 
 @Table(name = "MyTweetDB")
 public class TweetDB extends Model {
-    @Column(name = "Created_at")
-    public String created_at;
     @Column(name = "TweetId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public long id;
     @Column(name = "Json")
@@ -23,9 +21,8 @@ public class TweetDB extends Model {
         super();
     }
 
-    public TweetDB(String created_at, long id, String JSONObject) {
+    public TweetDB(long id, String JSONObject) {
         super();
-        this.created_at = created_at;
         this.id = id;
         this.JSONObject = JSONObject;
     }

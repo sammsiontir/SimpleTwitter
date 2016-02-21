@@ -2,7 +2,6 @@ package com.codepath.apps.simpletwitter.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,8 +99,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         // Special Case: Yesterday
         if (relativeDate.equals("Yesterday")) {
             String res = "1 d";
-            Log.d("DEBUG: relativeDate = ", relativeDate);
-            Log.d("DEBUG: relativeDate = ", res);
+            //Log.d("DEBUG: relativeDate = ", relativeDate);
+            //Log.d("DEBUG: relativeDate = ", res);
             return res;
         }
 
@@ -116,8 +115,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                   relativeDate.charAt(pos) == 'm' ||
                   relativeDate.charAt(pos) == 's')
                  && pos + 1 < relativeDate.length()) {
-                Log.d("DEBUG: relativeDate = ", relativeDate);
-                Log.d("DEBUG: relativeDate = ", relativeDate.substring(0, pos+1));
+                //Log.d("DEBUG: relativeDate = ", relativeDate);
+                //Log.d("DEBUG: relativeDate = ", relativeDate.substring(0, pos+1));
                 return relativeDate.substring(0, pos+1);
             }
         }
@@ -131,9 +130,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        Log.d("DEBUG: relativeDate = ", relativeDate);
-        Log.d("DEBUG: reformatted = ", reformattedStr);
+        //Log.d("DEBUG: relativeDate = ", relativeDate);
+        //Log.d("DEBUG: reformatted = ", reformattedStr);
         return reformattedStr;
     }
 }

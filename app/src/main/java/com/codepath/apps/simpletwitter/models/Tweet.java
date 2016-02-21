@@ -31,7 +31,6 @@ public class Tweet {
 
     public TweetDB convertToDB() {
         TweetDB tweetDB = new TweetDB();
-        tweetDB.created_at = this.created_at;
         tweetDB.id = this.id;
 
         Gson gson = new Gson();
