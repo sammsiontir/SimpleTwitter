@@ -39,7 +39,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity implements TweetFragment.TweetComposeListener{
-
     private User myself;
     private TwitterClient client;
     private TweetsAdapter tweetsAdapter;
@@ -181,7 +180,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetFragment
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
                 ArrayList<Tweet> moreTweets = gson.fromJson(response.toString(),
-                        new TypeToken<ArrayList<Tweet>>() {}.getType());
+                        new TypeToken<ArrayList<Tweet>>() {
+                        }.getType());
                 // store data and notify the adapter
                 homeTimelineTweets.addAll(moreTweets);
                 int curSize = tweetsAdapter.getItemCount();

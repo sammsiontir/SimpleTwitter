@@ -31,10 +31,11 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String GET_HOMETIMELINE_URL = "statuses/home_timeline.json";
 	public static final String GET_MY_ACCOUNT_URL   = "account/verify_credentials.json";
 	public static final String POST_UPDATE_URL      = "statuses/update.json";
-	public static final String POST_RETWEET_URL     = "statuses/retweet/:id.json";
-	public static final String POST_UNRETWEET_URL   = "statuses/unretweet/:id.json";
+	public static final String POST_RETWEET_URL     = "statuses/retweet/"; // + id + JSON
+	public static final String POST_UNRETWEET_URL   = "statuses/unretweet/"; // +id + JSON
 	public static final String POST_FAVORITE_URL    = "favorites/create.json";
 	public static final String POST_UNFAVORITE_URL  = "favorites/destroy.json";
+	public static final String JSON                 = ".json";
 	public static final String PARAM_COUNT = "25";
 
 
@@ -83,7 +84,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// Post retweet
 	public void postRetweet(long id, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl(POST_RETWEET_URL);
+		String apiUrl = getApiUrl(POST_RETWEET_URL + Long.toString(id) + JSON);
 		// Specify params
 		RequestParams params = new RequestParams();
 		params.put("id", id);
@@ -93,7 +94,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// Post un-retweet
 	public void postUnRetweet(long id, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl(POST_UNRETWEET_URL);
+		String apiUrl = getApiUrl(POST_UNRETWEET_URL + Long.toString(id) + JSON);
 		// Specify params
 		RequestParams params = new RequestParams();
 		params.put("id", id);

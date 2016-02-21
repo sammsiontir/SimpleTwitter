@@ -136,7 +136,7 @@
                             android:layout_width="@dimen/tweet_button_size"
                             android:layout_height="@dimen/tweet_button_size"
                             android:id="@+id/ibRetweet"
-                            android:background="@drawable/ic_retweet_aab8c2"
+                            android:background="@drawable/btn_retweet_background"
                             android:scaleType="fitCenter"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
