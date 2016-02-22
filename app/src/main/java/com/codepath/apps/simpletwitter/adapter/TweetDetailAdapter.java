@@ -26,6 +26,10 @@ public abstract class TweetDetailAdapter extends RecyclerView.Adapter<RecyclerVi
         this.topTweet = topTweet;
     }
 
+    public List<Long> getTweets() {
+        return tweets;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder;

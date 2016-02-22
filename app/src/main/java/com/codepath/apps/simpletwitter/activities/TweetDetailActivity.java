@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletwitter.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,9 +20,11 @@ import com.codepath.apps.simpletwitter.adapter.TweetDetailAdapter;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -72,7 +75,10 @@ public class TweetDetailActivity extends AppCompatActivity
 
             @Override
             public void onClickText(Long tweetId) {
-
+                Intent tweetDetailIntent = new Intent(TweetDetailActivity.this, TweetDetailActivity.class);
+                tweetDetailIntent.putExtra("myself", myself);
+                tweetDetailIntent.putExtra("topTweetId", tweetId);
+                startActivity(tweetDetailIntent);
             }
         };
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -87,11 +93,49 @@ public class TweetDetailActivity extends AppCompatActivity
             }
         });
 
-        loadLatestTweets();
+        loadLatestTweets(topTweet.user.screen_name);
     }
 
-    private void loadLatestTweets() {
+    private void loadLatestTweets(String screenName) {
+        long max_id = 0;
+        long since_id = 0;
+        if (tweetComments != null && tweetComments.size() > 0) {
+            since_id = tweetComments.get(0);
+        }
+        TwitterApplication.getRestClient().getTweetWithScreenName(screenName, max_id, since_id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                ArrayList<Tweet> moreTweets = null;
+                try {
+                    String res = response.getJSONArray("statuses").toString();
+                    Log.d("DEBUG", res);
+                    moreTweets = gson.fromJson(res, new TypeToken<ArrayList<Tweet>>() {}.getType());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                for (int i = 0; i < moreTweets.size(); i++) {
+                    // check if in_reply_to_status_id == topTweet.id
+                    //if(moreTweets.get(i).in_reply_to_status_id != null
+                    //        && moreTweets.get(i).in_reply_to_status_id == topTweet.id) {
+                        tweetComments.add(moreTweets.get(i).id);
+                        moreTweets.get(i).update();
+                    //}
+                }
+                // notify the adapter
+                tweetDetailAdapter.notifyDataSetChanged();
+                // clear refresh mark if calling by swipe to refresh
+                // srHomeTimeline.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
     }
 
     private void loadPreviousComments() {
