@@ -46,12 +46,15 @@ The following **additional** features are implemented:
 * [X] Display reply immediately in detail view
 * [X] Use floating button for returning to the top
 * [x] Hide toolbar when scrolling
+* [x] Display related tweets when open a tweet in detail view
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/SimpleTwitter.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/SimpleTwitter2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
