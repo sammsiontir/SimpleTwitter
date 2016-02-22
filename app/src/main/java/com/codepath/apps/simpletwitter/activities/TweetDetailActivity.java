@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class TweetDetailActivity extends AppCompatActivity
         implements ReplyFragment.TweetReplyListener {
@@ -43,6 +44,9 @@ public class TweetDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_detail);
+        // Bind all views
+        ButterKnife.bind(this);
+        // Bind view with toolbar and floating button
         setSupportActionBar(toolbar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +57,10 @@ public class TweetDetailActivity extends AppCompatActivity
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Get passing data
+        myself = getIntent().getParcelableExtra("myself");
+        Long topTweetId = getIntent().getLongExtra("topTweetId", 0);
+        topTweet = Tweet.hashTweets.get(topTweetId);
 
         // Initial data and adapter
         tweetComments = new ArrayList<>();
@@ -78,6 +86,12 @@ public class TweetDetailActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Load More", Toast.LENGTH_LONG).show();
             }
         });
+
+        loadLatestTweets();
+    }
+
+    private void loadLatestTweets() {
+
     }
 
     private void loadPreviousComments() {
@@ -96,7 +110,7 @@ public class TweetDetailActivity extends AppCompatActivity
                 // update DB
                 tweet.update();
                 // update timeline
-                tweetComments.add(1, tweet.id);
+                tweetComments.add(0, tweet.id);
                 tweetDetailAdapter.notifyItemInserted(1);
             }
 

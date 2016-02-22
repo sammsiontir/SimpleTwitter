@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletwitter.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -90,7 +91,10 @@ public class TimelineActivity extends AppCompatActivity
 
             @Override
             public void onClickText(Long tweetId) {
-
+                Intent tweetDetailIntent = new Intent(TimelineActivity.this, TweetDetailActivity.class);
+                tweetDetailIntent.putExtra("myself", myself);
+                tweetDetailIntent.putExtra("topTweetId", tweetId);
+                startActivity(tweetDetailIntent);
             }
         };
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

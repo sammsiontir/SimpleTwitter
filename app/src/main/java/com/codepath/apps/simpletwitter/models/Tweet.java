@@ -16,6 +16,7 @@ public class Tweet {
     public int retweet_count;
     public boolean retweeted;
     public User user;
+    public Long in_reply_to_status_id;
 
     // Quote tweet - may be null
     public long quoted_status_id;
