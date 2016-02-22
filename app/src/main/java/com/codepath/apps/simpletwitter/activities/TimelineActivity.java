@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.activeandroid.query.Delete;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
-import com.codepath.apps.simpletwitter.RESTAPI.TwitterClient;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
 import com.codepath.apps.simpletwitter.models.Tweet;
@@ -40,8 +39,7 @@ import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity
         implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener  {
-    private User myself;
-    private TwitterClient client;
+    public static User myself;
     private TweetsAdapter tweetsAdapter;
     private ArrayList<Long> homeTimelineTweets;
 
@@ -87,7 +85,12 @@ public class TimelineActivity extends AppCompatActivity
         tweetsAdapter = new TweetsAdapter(homeTimelineTweets) {
             @Override
             public void onClickReply(Long tweetId) {
-                replyTweet(myself, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text);
+                replyTweet(myself, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text, tweetId);
+            }
+
+            @Override
+            public void onClickText(Long tweetId) {
+
             }
         };
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -102,7 +105,6 @@ public class TimelineActivity extends AppCompatActivity
             }
         });
 
-        client = TwitterApplication.getRestClient();
         // Get Current User account
         getMyAccount();
         // Get Home timeline
@@ -127,7 +129,7 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     private void getMyAccount() {
-        client.getMyAccount(new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().getMyAccount(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
@@ -150,7 +152,7 @@ public class TimelineActivity extends AppCompatActivity
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
             since_id = tweetsAdapter.getTweets().get(0);
         }
-        client.getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
@@ -185,7 +187,7 @@ public class TimelineActivity extends AppCompatActivity
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
             max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 1);
         }
-        client.getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
@@ -214,7 +216,7 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     private void postTweet(String status) {
-        client.postStatusUpdate(status, 0, new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().postStatusUpdate(status, 0, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
@@ -281,6 +283,7 @@ public class TimelineActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    // Open compose dialog
     private void composeTweet() {
         // create fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -290,11 +293,11 @@ public class TimelineActivity extends AppCompatActivity
         composeTweet.show(fragmentManager, "compose_tweet");
     }
 
-    private void replyTweet(User sender, User recipient, String status) {
+    private void replyTweet(User sender, User recipient, String status, Long id) {
         // create fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         // pass user information to dialog
-        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status);
+        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status, id);
         // create compose tweet dialog
         replyTweet.show(fragmentManager, "reply_tweet");
     }
@@ -305,7 +308,7 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     @Override
-    public void onClickReply(String inputText) {
-        postTweet(inputText);
+    public void onClickReply(String inputText, Long id) {
+        replyTweet(inputText, id);
     }
 }

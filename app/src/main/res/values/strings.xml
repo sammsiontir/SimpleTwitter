@@ -5,5 +5,6 @@
     <string name="login_label">Connect To Twitter</string>
     <string name="title_activity_timeline">TimelineActivity</string>
     <string name="action_settings">Setting</string>
+    <string name="title_activity_tweet_detail">TweetDetailActivity</string>
 
 </resources>

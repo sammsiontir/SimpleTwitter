@@ -39,13 +39,14 @@ public class ReplyFragment extends DialogFragment {
     public ReplyFragment() {
     }
 
-    public static ReplyFragment newInstance(User sender, User recipient, String status) {
+    public static ReplyFragment newInstance(User sender, User recipient, String status, Long id) {
         ReplyFragment reply = new ReplyFragment();
         // collect passing data
         Bundle data = new Bundle();
         data.putParcelable("sender", sender);
         data.putParcelable("recipient", recipient);
         data.putString("received", status);
+        data.putLong("id", id);
         // prepare return object
         reply.setArguments(data);
         return reply;
@@ -69,6 +70,7 @@ public class ReplyFragment extends DialogFragment {
         User sender = getArguments().getParcelable("sender");
         User recipient = getArguments().getParcelable("recipient");
         String status = getArguments().getString("status");
+        final Long id = getArguments().getLong("id");
 
         // Bind User information
         // Todo: radius the corner
@@ -96,7 +98,7 @@ public class ReplyFragment extends DialogFragment {
                 // remain characters must be in the range for submit tweet
                 String tweetText = etComposeText.getText().toString();
                 TweetReplyListener listener = (TweetReplyListener) getActivity();
-                listener.onClickReply(tweetText);
+                listener.onClickReply(tweetText, id);
                 dismiss();
             }
         });
@@ -118,7 +120,7 @@ public class ReplyFragment extends DialogFragment {
     }
 
     public interface TweetReplyListener {
-        void onClickReply(String inputText);
+        void onClickReply(String inputText, Long id);
     }
 
     private void setComposeTextField() {
