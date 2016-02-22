@@ -3,7 +3,6 @@ package com.codepath.apps.simpletwitter.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -57,11 +56,13 @@ public class TimelineActivity extends AppCompatActivity
         ButterKnife.bind(this);
         // Bind view with toolbar and floating button
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setIcon(R.drawable.twitter_logo_white);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Get data from DB", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                rvHomeTimeline.scrollToPosition(0);
             }
         });
         // Bind with swipe to refresh

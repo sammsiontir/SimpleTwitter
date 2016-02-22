@@ -3,7 +3,6 @@ package com.codepath.apps.simpletwitter.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,8 +39,6 @@ public class TweetDetailActivity extends AppCompatActivity
     private ArrayList<Long> tweetComments;
 
     @Bind(R.id.rvTweetDetail) RecyclerView rvTweetDetail;
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +47,22 @@ public class TweetDetailActivity extends AppCompatActivity
         // Bind all views
         ButterKnife.bind(this);
         // Bind view with toolbar and floating button
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                rvTweetDetail.scrollToPosition(0);
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get passing data
         myself = getIntent().getParcelableExtra("myself");
         Long topTweetId = getIntent().getLongExtra("topTweetId", 0);
         topTweet = Tweet.hashTweets.get(topTweetId);
+        getSupportActionBar().setTitle("@"+topTweet.user.screen_name);
 
         // Initial data and adapter
         tweetComments = new ArrayList<>();
@@ -117,11 +116,11 @@ public class TweetDetailActivity extends AppCompatActivity
 
                 for (int i = 0; i < moreTweets.size(); i++) {
                     // check if in_reply_to_status_id == topTweet.id
-                    //if(moreTweets.get(i).in_reply_to_status_id != null
-                    //        && moreTweets.get(i).in_reply_to_status_id == topTweet.id) {
+                    if(moreTweets.get(i).in_reply_to_status_id != null
+                            && moreTweets.get(i).in_reply_to_status_id == topTweet.id) {
                         tweetComments.add(moreTweets.get(i).id);
                         moreTweets.get(i).update();
-                    //}
+                    }
                 }
                 // notify the adapter
                 tweetDetailAdapter.notifyDataSetChanged();
