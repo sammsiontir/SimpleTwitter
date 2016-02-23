@@ -89,7 +89,6 @@ public class TweetDetailActivity extends AppCompatActivity
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 loadPreviousComments();
-                Toast.makeText(getApplicationContext(), "Load More", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -120,7 +119,7 @@ public class TweetDetailActivity extends AppCompatActivity
                     if(moreTweets.get(i).in_reply_to_status_id != null
                             && moreTweets.get(i).in_reply_to_status_id == topTweet.id) {
                         tweetComments.add(moreTweets.get(i).id);
-                        moreTweets.get(i).update();
+                        Tweet.hashTweets.put(moreTweets.get(i).id, moreTweets.get(i));
                     }
                 }
                 // notify the adapter

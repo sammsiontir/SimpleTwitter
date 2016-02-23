@@ -45,7 +45,7 @@ public class TimelineActivity extends AppCompatActivity
         // Bind view with toolbar and floating button
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setIcon(R.drawable.twitter_logo_white);
+        getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
 
 
         // Bind with Home Timeline Fragment
@@ -64,8 +64,6 @@ public class TimelineActivity extends AppCompatActivity
         // Get Current User account
         if(User.account == null) getMyAccount();
     }
-
-
 
     private void getMyAccount() {
         TwitterApplication.getRestClient().getMyAccount(new JsonHttpResponseHandler() {
