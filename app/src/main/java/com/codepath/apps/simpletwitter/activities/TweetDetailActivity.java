@@ -138,7 +138,6 @@ public class TweetDetailActivity extends AppCompatActivity
     }
 
     private void loadPreviousComments() {
-
     }
 
 

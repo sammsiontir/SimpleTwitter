@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
@@ -28,16 +29,18 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_SECRET = "HOnHnaeuB4OAkcVYgbfONxrJdOjv6mjI0WWyC74EukWOeSM02Q";
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
-	public static final String GET_HOMETIMELINE_URL = "statuses/home_timeline.json";
-	public static final String GET_TWEET_URL        = "statuses/show.json";
-	public static final String GET_MY_ACCOUNT_URL   = "account/verify_credentials.json";
-	public static final String GET_TWEET_SEARCH     = "search/tweets.json";  //
-	public static final String POST_UPDATE_URL      = "statuses/update.json";
-	public static final String POST_RETWEET_URL     = "statuses/retweet/"; // + id + JSON
-	public static final String POST_UNRETWEET_URL   = "statuses/unretweet/"; // +id + JSON
-	public static final String POST_FAVORITE_URL    = "favorites/create.json";
-	public static final String POST_UNFAVORITE_URL  = "favorites/destroy.json";
-	public static final String JSON                 = ".json";
+    public static final String GET_MENTIONS_TIMELINE_URL = "statuses/mentions_timeline.json";
+	public static final String GET_USER_TIMELINE_URL     = "statuses/user_timeline.json";
+	public static final String GET_HOMETIMELINE_URL      = "statuses/home_timeline.json";
+	public static final String GET_TWEET_URL             = "statuses/show.json";
+	public static final String GET_MY_ACCOUNT_URL        = "account/verify_credentials.json";
+	public static final String GET_TWEET_SEARCH          = "search/tweets.json";  //
+	public static final String POST_UPDATE_URL           = "statuses/update.json";
+	public static final String POST_RETWEET_URL          = "statuses/retweet/"; // + id + JSON
+	public static final String POST_UNRETWEET_URL        = "statuses/unretweet/"; // +id + JSON
+	public static final String POST_FAVORITE_URL         = "favorites/create.json";
+	public static final String POST_UNFAVORITE_URL       = "favorites/destroy.json";
+	public static final String JSON                      = ".json";
 	public static final String PARAM_COUNT = "25";
 
 
@@ -65,6 +68,39 @@ public class TwitterClient extends OAuthBaseClient {
 		// Execute request
 		getClient().get(apiUrl, params, handler);
 	}
+
+	// Get mentions
+	public void getMentionsTimeline(long max_id, long since_id, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_MENTIONS_TIMELINE_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("count", PARAM_COUNT);
+        if(max_id > 0) {
+            params.put("max_id", Long.toString(max_id));
+        }
+        if(since_id > 0) {
+            params.put("since_id", Long.toString(since_id));
+        }
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+	}
+
+    // Get mentions
+    public void getUserTimeline(long user_id, long max_id, long since_id, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_TIMELINE_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        params.put("count", PARAM_COUNT);
+        if(max_id > 0) {
+            params.put("max_id", Long.toString(max_id));
+        }
+        if(since_id > 0) {
+            params.put("since_id", Long.toString(since_id));
+        }
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
 
 	// Get my account
 	public void getMyAccount(AsyncHttpResponseHandler handler) {
