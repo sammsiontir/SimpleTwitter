@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.activities.TweetDetailActivity;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
+import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public abstract class TweetsListFragment extends Fragment {
             @Override
             public void onClickReply(Long tweetId) {
                 // Todo: get reply fragment
-                // replyTweet(User.account, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text, tweetId);
+                replyTweet(User.account, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text, tweetId);
             }
 
             @Override
@@ -85,6 +87,12 @@ public abstract class TweetsListFragment extends Fragment {
                 startActivity(tweetDetailIntent);
             }
         };
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     public void add(int position, Long tweetId) {
@@ -98,4 +106,13 @@ public abstract class TweetsListFragment extends Fragment {
 
     public abstract void onScrollingDown();
     public abstract void onPullToRefresh();
+
+    private void replyTweet(User sender, User recipient, String status, Long id) {
+        // create fragment manager
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        // pass user information to dialog
+        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status, id);
+        // create compose tweet dialog
+        replyTweet.show(fragmentManager, "reply_tweet");
+    }
 }
