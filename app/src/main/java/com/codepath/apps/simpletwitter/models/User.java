@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable {
+    public static transient User account = null;
+
     public String name;
     public String screen_name;
     public String profile_image_url;

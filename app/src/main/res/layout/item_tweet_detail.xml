@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:text="LIKES"
                 android:id="@+id/tvLabelLike"
-                android:textColor="@color/twitter_gray"
+                android:textColor="@color/twitter_dark_gray"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/textView3"
                 android:layout_toEndOf="@+id/textView3" />

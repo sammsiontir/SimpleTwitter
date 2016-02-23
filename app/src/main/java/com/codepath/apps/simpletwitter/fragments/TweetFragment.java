@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitter.activities;
+package com.codepath.apps.simpletwitter.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -140,4 +140,6 @@ public class TweetFragment extends DialogFragment {
             }
         });
     }
+
+
 }
