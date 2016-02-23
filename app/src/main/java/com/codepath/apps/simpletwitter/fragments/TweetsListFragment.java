@@ -1,10 +1,9 @@
 package com.codepath.apps.simpletwitter.fragments;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,11 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.apps.simpletwitter.R;
-import com.codepath.apps.simpletwitter.activities.TweetDetailActivity;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
-import com.codepath.apps.simpletwitter.models.Tweet;
-import com.codepath.apps.simpletwitter.models.User;
 
 import java.util.ArrayList;
 
@@ -31,6 +27,27 @@ public abstract class TweetsListFragment extends Fragment {
     @Bind(R.id.srHomeTimeline) SwipeRefreshLayout srHomeTimeline;
     @Bind(R.id.rvHomeTimeline) RecyclerView rvHomeTimeline;
 
+    private TweetsListOnClickListener listener;
+
+    // Define the events that the fragment will use to communicate
+    public interface TweetsListOnClickListener {
+        void onClickReply(Long tweetId);
+        void onClickText(Long tweetId);
+    }
+
+    public abstract void onScrollingDown();
+    public abstract void onPullToRefresh();
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof TweetsListOnClickListener) {
+            listener = (TweetsListOnClickListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement MyListFragment.OnItemSelectedListener");
+        }
+    }
 
     @Nullable
     @Override
@@ -75,16 +92,12 @@ public abstract class TweetsListFragment extends Fragment {
         tweetsAdapter = new TweetsAdapter(homeTimelineTweets) {
             @Override
             public void onClickReply(Long tweetId) {
-                // Todo: get reply fragment
-                replyTweet(User.account, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text, tweetId);
+                listener.onClickReply(tweetId);
             }
 
             @Override
             public void onClickText(Long tweetId) {
-                Intent tweetDetailIntent = new Intent(getActivity(), TweetDetailActivity.class);
-                tweetDetailIntent.putExtra("myself", User.account);
-                tweetDetailIntent.putExtra("topTweetId", tweetId);
-                startActivity(tweetDetailIntent);
+                listener.onClickText(tweetId);
             }
         };
     }
@@ -102,17 +115,5 @@ public abstract class TweetsListFragment extends Fragment {
 
     public void scrollToPosition(int position) {
         rvHomeTimeline.scrollToPosition(position);
-    }
-
-    public abstract void onScrollingDown();
-    public abstract void onPullToRefresh();
-
-    private void replyTweet(User sender, User recipient, String status, Long id) {
-        // create fragment manager
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        // pass user information to dialog
-        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status, id);
-        // create compose tweet dialog
-        replyTweet.show(fragmentManager, "reply_tweet");
     }
 }

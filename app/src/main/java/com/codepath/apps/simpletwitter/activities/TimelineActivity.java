@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletwitter.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -28,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity
-        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener  {
+        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener, HomeTimelineFragment.TweetsListOnClickListener  {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
@@ -141,39 +142,43 @@ public class TimelineActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_tweet) {
-            composeTweet();
+            // create fragment manager
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            // pass user information to dialog
+            TweetFragment composeTweet = TweetFragment.newInstance(User.account);
+            // create compose tweet dialog
+            composeTweet.show(fragmentManager, "compose_tweet");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    // Open compose dialog
-    private void composeTweet() {
-        // create fragment manager
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // pass user information to dialog
-        TweetFragment composeTweet = TweetFragment.newInstance(User.account);
-        // create compose tweet dialog
-        composeTweet.show(fragmentManager, "compose_tweet");
+    @Override
+    public void onSubmitTweet(String inputText) {
+        postTweet(inputText);
     }
 
-    private void replyTweet(User sender, User recipient, String status, Long id) {
+    @Override
+    public void onSubmitReply(String inputText, Long id) {
+        replyTweet(inputText, id);
+    }
+
+    @Override
+    public void onClickReply(Long tweetId) {
         // create fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         // pass user information to dialog
-        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status, id);
+        ReplyFragment replyTweet = ReplyFragment.newInstance(tweetId);
         // create compose tweet dialog
         replyTweet.show(fragmentManager, "reply_tweet");
     }
 
     @Override
-    public void onClickTweet(String inputText) {
-        postTweet(inputText);
-    }
-
-    @Override
-    public void onClickReply(String inputText, Long id) {
-        replyTweet(inputText, id);
+    public void onClickText(Long tweetId) {
+        Intent tweetDetailIntent = new Intent(this, TweetDetailActivity.class);
+        tweetDetailIntent.putExtra("myself", User.account);
+        tweetDetailIntent.putExtra("topTweetId", tweetId);
+        startActivity(tweetDetailIntent);
     }
 }

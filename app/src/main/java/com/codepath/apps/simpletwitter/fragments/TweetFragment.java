@@ -84,7 +84,7 @@ public class TweetFragment extends DialogFragment {
                 // remain characters must be in the range for submit tweet
                 String tweetText = etComposeText.getText().toString();
                 TweetComposeListener listener = (TweetComposeListener) getActivity();
-                listener.onClickTweet(tweetText);
+                listener.onSubmitTweet(tweetText);
                 dismiss();
             }
         });
@@ -106,7 +106,7 @@ public class TweetFragment extends DialogFragment {
     }
 
     public interface TweetComposeListener {
-        void onClickTweet(String inputText);
+        void onSubmitTweet(String inputText);
     }
 
     private void setComposeTextField() {

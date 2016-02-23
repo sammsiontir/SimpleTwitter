@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 
 import butterknife.Bind;
@@ -39,14 +40,11 @@ public class ReplyFragment extends DialogFragment {
     public ReplyFragment() {
     }
 
-    public static ReplyFragment newInstance(User sender, User recipient, String status, Long id) {
+    public static ReplyFragment newInstance(Long tweetId) {
         ReplyFragment reply = new ReplyFragment();
         // collect passing data
         Bundle data = new Bundle();
-        data.putParcelable("sender", sender);
-        data.putParcelable("recipient", recipient);
-        data.putString("received", status);
-        data.putLong("id", id);
+        data.putLong("tweetId", tweetId);
         // prepare return object
         reply.setArguments(data);
         return reply;
@@ -67,10 +65,10 @@ public class ReplyFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Fetch passing data from activity
-        User sender = getArguments().getParcelable("sender");
-        User recipient = getArguments().getParcelable("recipient");
-        String status = getArguments().getString("status");
-        final Long id = getArguments().getLong("id");
+        User sender = User.account;
+        final Long id =  getArguments().getLong("tweetId");
+        Tweet tweet = Tweet.hashTweets.get(id);
+
 
         // Bind User information
         // Todo: radius the corner
@@ -82,10 +80,10 @@ public class ReplyFragment extends DialogFragment {
         tvScreenNameCompose.setText(sender.screen_name);
 
         // Bind ReplyStatus
-        tvReplyStatus.setText(REPLYSTATUSPREFIX + recipient.name);
+        tvReplyStatus.setText(REPLYSTATUSPREFIX + tweet.user.name);
 
         // Set Text field
-        String replyString = "@" + recipient.screen_name + " ";
+        String replyString = "@" + tweet.user.screen_name + " ";
         REPLY_PREFIX_COUNT = replyString.length();
         etComposeText.setText(replyString);
         setComposeTextField();
@@ -98,7 +96,7 @@ public class ReplyFragment extends DialogFragment {
                 // remain characters must be in the range for submit tweet
                 String tweetText = etComposeText.getText().toString();
                 TweetReplyListener listener = (TweetReplyListener) getActivity();
-                listener.onClickReply(tweetText, id);
+                listener.onSubmitReply(tweetText, id);
                 dismiss();
             }
         });
@@ -110,7 +108,6 @@ public class ReplyFragment extends DialogFragment {
                 dismiss();
             }
         });
-
     }
 
     @Override
@@ -120,7 +117,7 @@ public class ReplyFragment extends DialogFragment {
     }
 
     public interface TweetReplyListener {
-        void onClickReply(String inputText, Long id);
+        void onSubmitReply(String inputText, Long id);
     }
 
     private void setComposeTextField() {

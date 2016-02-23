@@ -15,7 +15,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
-                    , JSONObject errorResponse) {
+                    , JSONArray errorResponse) {
                 throwable.printStackTrace();
                 Log.e("REST_API_ERROR", errorResponse.toString());
             }
@@ -117,9 +116,10 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 tweetsAdapter.notifyItemRangeInserted(curSize, homeTimelineTweets.size() - 1);
             }
 
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
-                    , JSONObject errorResponse) {
+                    , JSONArray errorResponse) {
                 throwable.printStackTrace();
                 Log.e("REST_API_ERROR", errorResponse.toString());
             }

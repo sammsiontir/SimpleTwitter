@@ -70,7 +70,7 @@ public class TweetDetailActivity extends AppCompatActivity
         tweetDetailAdapter = new TweetDetailAdapter(tweetComments, topTweet.id) {
             @Override
             public void onClickReply(Long tweetId) {
-                replyTweet(myself, Tweet.hashTweets.get(tweetId).user, Tweet.hashTweets.get(tweetId).text, tweetId);
+                replyTweet(tweetId);
             }
 
             @Override
@@ -166,18 +166,18 @@ public class TweetDetailActivity extends AppCompatActivity
     }
 
     // Open compose dialog
-    private void replyTweet(User sender, User recipient, String status, Long id) {
+    private void replyTweet(Long id) {
         // create fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         // pass user information to dialog
-        ReplyFragment replyTweet = ReplyFragment.newInstance(sender, recipient, status, id);
+        ReplyFragment replyTweet = ReplyFragment.newInstance(id);
         // create compose tweet dialog
         replyTweet.show(fragmentManager, "reply_tweet");
     }
 
 
     @Override
-    public void onClickReply(String inputText, Long id) {
+    public void onSubmitReply(String inputText, Long id) {
         replyTweet(inputText, id);
     }
 
