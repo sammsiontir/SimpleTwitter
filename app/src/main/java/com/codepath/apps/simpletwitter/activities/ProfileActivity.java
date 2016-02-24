@@ -3,6 +3,7 @@ package com.codepath.apps.simpletwitter.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +15,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
-import com.codepath.apps.simpletwitter.adapter.TweetsPagerAdapter;
+import com.codepath.apps.simpletwitter.adapter.ProfilePagerAdapter;
 import com.codepath.apps.simpletwitter.fragments.HomeTimelineFragment;
 import com.codepath.apps.simpletwitter.fragments.ReplyFragment;
 import com.codepath.apps.simpletwitter.fragments.TweetFragment;
@@ -32,40 +32,37 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TimelineActivity extends AppCompatActivity
-        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener, HomeTimelineFragment.TweetsListOnClickListener  {
+public class ProfileActivity extends AppCompatActivity
+        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener, HomeTimelineFragment.TweetsListOnClickListener {
+    private User user;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.fab) FloatingActionButton fab;
-    @Bind(R.id.vpHMPager) ViewPager vpHMPager;
-    @Bind(R.id.tabsHM) PagerSlidingTabStrip tabsHM;
+    @Bind(R.id.tabsProfile) PagerSlidingTabStrip tabsProfile;
+    @Bind(R.id.vpProfilePager) ViewPager vpProfilePager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
-        // Bind all views
-        ButterKnife.bind(this);
-        // Bind view with toolbar and floating button
+        setContentView(R.layout.activity_profile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
 
-
-        // Bind vpHMPager & tabsHM
-        vpHMPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
-        tabsHM.setViewPager(vpHMPager);
-
-        // set floating button behavior
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // homeTimelineFragment.scrollToPosition(0);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
+        // Get user information from previous activity
+        user = getIntent().getParcelableExtra("user");
 
-        // Get Current User account
-        if(User.account == null) MyUtils.getMyAccount();
+        // Bind all views
+        ButterKnife.bind(this);
+
+        // Bind vpHMPager & tabsHM
+        vpProfilePager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager(), user));
+        tabsProfile.setViewPager(vpProfilePager);
     }
 
     private void postTweet(String status) {
@@ -172,4 +169,5 @@ public class TimelineActivity extends AppCompatActivity
         tweetDetailIntent.putExtra("topTweetId", tweetId);
         startActivity(tweetDetailIntent);
     }
+
 }

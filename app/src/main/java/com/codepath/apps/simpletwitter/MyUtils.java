@@ -3,11 +3,36 @@ package com.codepath.apps.simpletwitter;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
+import com.codepath.apps.simpletwitter.models.User;
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class MyUtils {
+    // Get current user account
+    public static void getMyAccount() {
+        TwitterApplication.getRestClient().getMyAccount(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                User.account = gson.fromJson(response.toString(), User.class);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
+    }
+
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
     public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";

@@ -16,24 +16,36 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-public class MentionsTimelineFragment extends TweetsListFragment {
+public class FavoriteTimelineFragment extends TweetsListFragment {
+    public Long current_user_id;
+
+    public static FavoriteTimelineFragment newInstance(Long user_id) {
+        FavoriteTimelineFragment favoriteTimelineFragment = new FavoriteTimelineFragment();
+        Bundle args = new Bundle();
+        args.putLong("user_id", user_id);
+        favoriteTimelineFragment.setArguments(args);
+        return favoriteTimelineFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get Mentions timeline
-        loadLatestTweets();
+        // Get current user id
+        current_user_id = getArguments().getLong("user_id");
+        // Get Home timeline
+        loadLatestTweets(current_user_id);
     }
 
     @Override
     public void onScrollingDown() {
-        loadPreviousTweets();
+        loadPreviousTweets(current_user_id);
         Toast.makeText(getActivity(), "Load More", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onPullToRefresh() {
         clearAllTweets();
-        loadLatestTweets();
+        loadLatestTweets(current_user_id);
     }
 
     private void clearAllTweets() {
@@ -41,13 +53,13 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         tweetsIdArray.clear();
     }
 
-    private void loadLatestTweets() {
+    private void loadLatestTweets(Long user_id) {
         long max_id = 0;
         long since_id = 0;
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
             since_id = tweetsAdapter.getTweets().get(0);
         }
-        TwitterApplication.getRestClient().getMentionsTimeline(max_id, since_id, new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().getFavoriteTimeline(user_id, max_id, since_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
@@ -56,7 +68,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                         }.getType());
 
                 for (int i = 0; i < moreTweets.size(); i++) {
-                    // update moreTweets to hashTweets only
+                    // updateToDB moreTweets to DB
                     moreTweets.get(i).update();
                     // store data
                     tweetsIdArray.add(moreTweets.get(i).id);
@@ -75,13 +87,13 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         });
     }
 
-    private void loadPreviousTweets() {
+    private void loadPreviousTweets(Long user_id) {
         long max_id = 0;
         long since_id = 0;
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
             max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 1);
         }
-        TwitterApplication.getRestClient().getMentionsTimeline(max_id, since_id, new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().getFavoriteTimeline(user_id, max_id, since_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Gson gson = new Gson();
@@ -90,7 +102,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                         }.getType());
 
                 for (int i = 0; i < moreTweets.size(); i++) {
-                    // update moreTweets to hashTweets only
+                    // updateToDB moreTweets to DB
                     moreTweets.get(i).update();
                     // store data and notify the adapter
                     tweetsIdArray.add(moreTweets.get(i).id);

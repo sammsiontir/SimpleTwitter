@@ -30,8 +30,9 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
     public static final String GET_MENTIONS_TIMELINE_URL = "statuses/mentions_timeline.json";
-	public static final String GET_USER_TIMELINE_URL     = "statuses/user_timeline.json";
-	public static final String GET_HOMETIMELINE_URL      = "statuses/home_timeline.json";
+    public static final String GET_HOMETIMELINE_URL      = "statuses/home_timeline.json";
+    public static final String GET_USER_TIMELINE_URL     = "statuses/user_timeline.json";
+    public static final String GET_USER_FAVORITE_URL     = "favorites/list.json";
 	public static final String GET_TWEET_URL             = "statuses/show.json";
 	public static final String GET_MY_ACCOUNT_URL        = "account/verify_credentials.json";
 	public static final String GET_TWEET_SEARCH          = "search/tweets.json";  //
@@ -88,6 +89,23 @@ public class TwitterClient extends OAuthBaseClient {
     // Get mentions
     public void getUserTimeline(long user_id, long max_id, long since_id, JsonHttpResponseHandler handler) {
         String apiUrl = getApiUrl(GET_USER_TIMELINE_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        params.put("count", PARAM_COUNT);
+        if(max_id > 0) {
+            params.put("max_id", Long.toString(max_id));
+        }
+        if(since_id > 0) {
+            params.put("since_id", Long.toString(since_id));
+        }
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    // Get favorites
+    public void getFavoriteTimeline(long user_id, long max_id, long since_id, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_FAVORITE_URL);
         // Specify params
         RequestParams params = new RequestParams();
         params.put("user_id", user_id);
