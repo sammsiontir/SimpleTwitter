@@ -38,6 +38,8 @@ public class TimelineActivity extends AppCompatActivity
     @Bind(R.id.vpHMPager) ViewPager vpHMPager;
     @Bind(R.id.tabsHM) PagerSlidingTabStrip tabsHM;
 
+    private TweetsPagerAdapter tweetsPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +53,15 @@ public class TimelineActivity extends AppCompatActivity
 
 
         // Bind vpHMPager & tabsHM
-        vpHMPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
+        vpHMPager.setAdapter(tweetsPagerAdapter);
         tabsHM.setViewPager(vpHMPager);
 
         // set floating button behavior
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // homeTimelineFragment.scrollToPosition(0);
+                tweetsPagerAdapter.scrollToPosition(vpHMPager, 0);
             }
         });
 
@@ -100,7 +103,7 @@ public class TimelineActivity extends AppCompatActivity
                 // updateToDB DB
                 tweet.updateToDB();
                 // updateToDB timeline
-                // homeTimelineFragment.add(0, tweet.id);
+                tweetsPagerAdapter.add(vpHMPager, 0, tweet.id);
             }
 
             @Override

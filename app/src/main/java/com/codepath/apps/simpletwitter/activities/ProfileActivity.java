@@ -1,10 +1,8 @@
 package com.codepath.apps.simpletwitter.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity
         implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener
         , HomeTimelineFragment.TweetsListOnClickListener, ProfileFragment.ProfileOnClickListener {
     private User user;
+    private ProfilePagerAdapter profilePagerAdapter;
 
     @Bind(R.id.tabsProfile) PagerSlidingTabStrip tabsProfile;
     @Bind(R.id.vpProfilePager) ViewPager vpProfilePager;
@@ -65,13 +64,14 @@ public class ProfileActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         // Bind vpHMPager & tabsHM
-        vpProfilePager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager(), user));
+        profilePagerAdapter = new ProfilePagerAdapter(getSupportFragmentManager(), user);
+        vpProfilePager.setAdapter(profilePagerAdapter);
         tabsProfile.setViewPager(vpProfilePager);
 
         // open profile fragment on the top
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ProfileFragment profileFragment = ProfileFragment.newInstance(user);
-        ft.add(R.id.flProfileHolder, profileFragment);
+        ft.replace(R.id.flProfileHolder, profileFragment);
         ft.commit();
     }
 
@@ -109,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity
                 // updateToDB DB
                 tweet.updateToDB();
                 // updateToDB timeline
-                // homeTimelineFragment.add(0, tweet.id);
+                profilePagerAdapter.add(vpProfilePager, 0, tweet.id);
             }
 
             @Override
@@ -133,18 +133,13 @@ public class ProfileActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.action_tweet:
-                // create fragment manager
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                // pass user information to dialog
-                TweetFragment composeTweet = TweetFragment.newInstance(User.account);
-                // create compose tweet dialog
-                composeTweet.show(fragmentManager, "compose_tweet");
+                MyUtils.openComposeDialog(this);
                 return true;
 
             case R.id.action_profile:
-                Intent profileIntent = new Intent(this, ProfileActivity.class);
-                profileIntent.putExtra("user", User.account);
-                startActivity(profileIntent);
+                if(user.id != User.account.id) {
+                    MyUtils.openProfileActivity(this, User.account);
+                }
                 return true;
 
             default:
@@ -175,7 +170,7 @@ public class ProfileActivity extends AppCompatActivity
     @Override
     public void onClickUser(User selectedUser) {
         // Do nothing if we are already in this user's profile page
-        if(selectedUser.id != this.user.id) {
+        if(selectedUser.id != user.id) {
             MyUtils.openProfileActivity(this, selectedUser);
         }
     }

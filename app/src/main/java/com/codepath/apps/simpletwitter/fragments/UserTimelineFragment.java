@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.activeandroid.query.Delete;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.models.Tweet;
-import com.codepath.apps.simpletwitter.models.TweetDB;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -17,7 +15,6 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserTimelineFragment extends TweetsListFragment {
     public Long current_user_id;
@@ -35,17 +32,8 @@ public class UserTimelineFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
         // Get current user id
         current_user_id = getArguments().getLong("user_id");
-
         // Get Home timeline
-        List<Long> queryResults = TweetDB.getRecentTweets(100);
-        if(queryResults != null && !queryResults.isEmpty()) {
-            tweetsIdArray.addAll(queryResults);
-            tweetsAdapter.notifyDataSetChanged();
-            Toast.makeText(getActivity(), "Load from DB", Toast.LENGTH_LONG).show();
-        }
-        else {
-            loadLatestTweets(current_user_id);
-        }
+        loadLatestTweets(current_user_id);
     }
 
     @Override
@@ -61,10 +49,6 @@ public class UserTimelineFragment extends TweetsListFragment {
     }
 
     private void clearAllTweets() {
-        // clear hashTweets
-        Tweet.hashTweets.clear();
-        // clear all tweets in DB
-        new Delete().from(TweetDB.class).execute();
         // clear all tweets in local data member
         tweetsIdArray.clear();
     }
