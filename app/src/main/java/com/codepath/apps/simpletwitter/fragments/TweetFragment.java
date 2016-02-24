@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 public class TweetFragment extends DialogFragment {
     private static final int TWEET_MAX_LENGTH = 140;
 
-    @Bind(R.id.ivProfilePictureCompose) ImageView ivProfilePictureCompose;
+    @Bind(R.id.ivProfilePicture) ImageView ivProfilePictureCompose;
     @Bind(R.id.tvUsernameCompose) TextView tvUsernameCompose;
     @Bind(R.id.tvScreenNameCompose) TextView tvScreenNameCompose;
     @Bind(R.id.ibCancelCompose) ImageButton ibCancelCompose;

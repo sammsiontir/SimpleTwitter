@@ -23,7 +23,7 @@
                 android:paddingLeft="@dimen/view_horizontal_margin"
                 android:paddingRight="@dimen/view_horizontal_margin"
                 android:paddingTop="@dimen/view_vertical_margin"
-                android:id="@+id/ivProfilePictureCompose"
+                android:id="@+id/ivProfilePicture"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
@@ -39,9 +39,9 @@
                 android:layout_marginLeft="7dp"
                 android:layout_marginStart="7dp"
                 android:layout_marginTop="13dp"
-                android:layout_alignTop="@+id/ivProfilePictureCompose"
-                android:layout_toRightOf="@+id/ivProfilePictureCompose"
-                android:layout_toEndOf="@+id/ivProfilePictureCompose" />
+                android:layout_alignTop="@+id/ivProfilePicture"
+                android:layout_toRightOf="@+id/ivProfilePicture"
+                android:layout_toEndOf="@+id/ivProfilePicture" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8296"
-                android:id="@+id/tvRetweetCount"
+                android:id="@+id/tvFollowingCount"
                 android:textColor="@color/twitter_dark_gray"
                 android:layout_alignTop="@+id/textView"
                 android:layout_alignParentLeft="true"
@@ -114,32 +114,29 @@
                 android:layout_height="wrap_content"
                 android:text=" "
                 android:id="@+id/textView"
-                android:layout_alignTop="@+id/tvLabelRetweet"
-                android:layout_toRightOf="@+id/tvRetweetCount"
-                android:layout_toEndOf="@+id/tvRetweetCount" />
+                android:layout_alignTop="@+id/tvLabelFollowing"
+                android:layout_toRightOf="@+id/tvFollowingCount"
+                android:layout_toEndOf="@+id/tvFollowingCount" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RETWEETS"
-                android:id="@+id/tvLabelRetweet"
+                android:id="@+id/tvLabelFollowing"
                 android:textColor="@color/twitter_dark_gray"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/textView"
                 android:layout_toEndOf="@+id/textView" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8296"
-                android:id="@+id/tvFavoriteCount"
+                android:id="@+id/tvFollowersCount"
                 android:textColor="@color/twitter_dark_gray"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/textView2"
                 android:layout_toEndOf="@+id/textView2" />
-
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -156,8 +153,8 @@
                 android:layout_height="wrap_content"
                 android:text="  "
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/tvLabelRetweet"
-                android:layout_toEndOf="@+id/tvLabelRetweet"
+                android:layout_toRightOf="@+id/tvLabelFollowing"
+                android:layout_toEndOf="@+id/tvLabelFollowing"
                 android:id="@+id/textView2" />
 
             <TextView
@@ -165,8 +162,8 @@
                 android:layout_height="wrap_content"
                 android:text=" "
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/tvFavoriteCount"
-                android:layout_toEndOf="@+id/tvFavoriteCount"
+                android:layout_toRightOf="@+id/tvFollowersCount"
+                android:layout_toEndOf="@+id/tvFollowersCount"
                 android:id="@+id/textView3" />
 
         </RelativeLayout>

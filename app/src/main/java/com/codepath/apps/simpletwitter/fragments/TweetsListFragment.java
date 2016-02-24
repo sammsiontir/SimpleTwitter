@@ -23,13 +23,11 @@ import butterknife.ButterKnife;
 public abstract class TweetsListFragment extends Fragment {
     protected TweetsAdapter tweetsAdapter;
     protected ArrayList<Long> tweetsIdArray;
+    private TweetsListOnClickListener listener;
 
     @Bind(R.id.srTimeline) SwipeRefreshLayout srTimeline;
     @Bind(R.id.rvTimeline) RecyclerView rvTimeline;
 
-    private TweetsListOnClickListener listener;
-
-    // Define the events that the fragment will use to communicate
     public interface TweetsListOnClickListener {
         void onClickReply(Long tweetId);
         void onClickText(Long tweetId);
@@ -45,7 +43,7 @@ public abstract class TweetsListFragment extends Fragment {
             listener = (TweetsListOnClickListener) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implement MyListFragment.OnItemSelectedListener");
+                    + " must implement TweetsListFragment.TweetsListOnClickListener");
         }
     }
 

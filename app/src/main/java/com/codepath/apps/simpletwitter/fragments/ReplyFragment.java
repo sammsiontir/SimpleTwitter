@@ -28,7 +28,7 @@ public class ReplyFragment extends DialogFragment {
     private static final String REPLYSTATUSPREFIX = "In Reply to ";
     private int REPLY_PREFIX_COUNT = 0;
 
-    @Bind(R.id.ivProfilePictureCompose) ImageView ivProfilePictureCompose;
+    @Bind(R.id.ivProfilePicture) ImageView ivProfilePictureCompose;
     @Bind(R.id.tvUsernameCompose) TextView tvUsernameCompose;
     @Bind(R.id.tvScreenNameCompose) TextView tvScreenNameCompose;
     @Bind(R.id.ibCancelCompose) ImageButton ibCancelCompose;

@@ -30,7 +30,7 @@
                 android:paddingLeft="@dimen/view_horizontal_margin"
                 android:paddingRight="@dimen/view_horizontal_margin"
                 android:paddingTop="@dimen/view_vertical_margin"
-                android:id="@+id/ivProfilePictureCompose"
+                android:id="@+id/ivProfilePicture"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
@@ -40,8 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/ivProfilePictureCompose"
-                android:layout_toEndOf="@+id/ivProfilePictureCompose">
+                android:layout_toRightOf="@+id/ivProfilePicture"
+                android:layout_toEndOf="@+id/ivProfilePicture">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2237"
-                            android:id="@+id/tvRetweetCount"
+                            android:id="@+id/tvFollowingCount"
                             android:textColor="@drawable/btn_retweet_textcolor"
                             android:layout_toRightOf="@+id/ibRetweet"
                             android:layout_marginLeft="@dimen/count_margin"
@@ -178,7 +178,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8296"
-                            android:id="@+id/tvFavoriteCount"
+                            android:id="@+id/tvFollowersCount"
                             android:textColor="@drawable/btn_favorite_textcolor"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/ibFavorite"

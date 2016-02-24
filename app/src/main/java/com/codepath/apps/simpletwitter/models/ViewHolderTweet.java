@@ -11,7 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ViewHolderTweet extends RecyclerView.ViewHolder{
-    @Bind(R.id.ivProfilePictureCompose)
+    @Bind(R.id.ivProfilePicture)
     public ImageView ivProfilePicture;
     @Bind(R.id.tvUsername)
     public TextView tvUsername;
@@ -25,11 +25,11 @@ public class ViewHolderTweet extends RecyclerView.ViewHolder{
     public ImageView ibReply;
     @Bind(R.id.ibRetweet)
     public ImageView ibRetweet;
-    @Bind(R.id.tvRetweetCount)
+    @Bind(R.id.tvFollowingCount)
     public TextView tvRetweetCount;
     @Bind(R.id.ibFavorite)
     public ImageView ibFavorite;
-    @Bind(R.id.tvFavoriteCount)
+    @Bind(R.id.tvFollowersCount)
     public TextView tvFavoriteCount;
 
     public ViewHolderTweet(View itemView) {

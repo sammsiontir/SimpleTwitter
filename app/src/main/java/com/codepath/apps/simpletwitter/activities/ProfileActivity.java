@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.adapter.ProfilePagerAdapter;
 import com.codepath.apps.simpletwitter.fragments.HomeTimelineFragment;
+import com.codepath.apps.simpletwitter.fragments.ProfileFragment;
 import com.codepath.apps.simpletwitter.fragments.ReplyFragment;
 import com.codepath.apps.simpletwitter.fragments.TweetFragment;
 import com.codepath.apps.simpletwitter.models.Tweet;
@@ -33,7 +35,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProfileActivity extends AppCompatActivity
-        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener, HomeTimelineFragment.TweetsListOnClickListener {
+        implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener
+        , HomeTimelineFragment.TweetsListOnClickListener, ProfileFragment.ProfileOnClickListener {
     private User user;
 
     @Bind(R.id.tabsProfile) PagerSlidingTabStrip tabsProfile;
@@ -63,6 +66,11 @@ public class ProfileActivity extends AppCompatActivity
         // Bind vpHMPager & tabsHM
         vpProfilePager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager(), user));
         tabsProfile.setViewPager(vpProfilePager);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ProfileFragment profileFragment = ProfileFragment.newInstance(user);
+        ft.add(R.id.flProfileHolder, profileFragment);
+        ft.commit();
     }
 
     private void postTweet(String status) {
@@ -170,4 +178,18 @@ public class ProfileActivity extends AppCompatActivity
         startActivity(tweetDetailIntent);
     }
 
+    @Override
+    public void onClickFollowing(Long userId) {
+
+    }
+
+    @Override
+    public void onClickFollower(Long userId) {
+
+    }
+
+    @Override
+    public void onClickProfilePicture(Long userId) {
+
+    }
 }
