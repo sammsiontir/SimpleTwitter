@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
@@ -60,7 +61,7 @@ public class TweetDetailActivity extends AppCompatActivity
         });
 
         // Get passing data
-        myself = getIntent().getParcelableExtra("myself");
+        myself = User.account;
         Long topTweetId = getIntent().getLongExtra("topTweetId", 0);
         topTweet = Tweet.hashTweets.get(topTweetId);
         getSupportActionBar().setTitle("@"+topTweet.user.screen_name);
@@ -127,7 +128,6 @@ public class TweetDetailActivity extends AppCompatActivity
                 // clear refresh mark if calling by swipe to refresh
                 // srHomeTimeline.setRefreshing(false);
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
@@ -152,10 +152,10 @@ public class TweetDetailActivity extends AppCompatActivity
                 // updateToDB DB
                 tweet.updateToDB();
                 // updateToDB timeline
-                tweetComments.add(0, tweet.id);
-                tweetDetailAdapter.notifyItemInserted(1);
+                tweetComments.add(tweet.id);
+                // notify change on the last item
+                tweetDetailAdapter.notifyItemInserted(tweetDetailAdapter.getItemCount());
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
@@ -167,6 +167,7 @@ public class TweetDetailActivity extends AppCompatActivity
 
     // Open compose dialog
     private void replyTweet(Long id) {
+        MyUtils.openReplyDialog(this, id);
         // create fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         // pass user information to dialog

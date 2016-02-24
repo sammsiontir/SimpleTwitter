@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.adapter.ProfilePagerAdapter;
@@ -67,6 +68,7 @@ public class ProfileActivity extends AppCompatActivity
         vpProfilePager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager(), user));
         tabsProfile.setViewPager(vpProfilePager);
 
+        // open profile fragment on the top
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ProfileFragment profileFragment = ProfileFragment.newInstance(user);
         ft.add(R.id.flProfileHolder, profileFragment);
@@ -162,34 +164,34 @@ public class ProfileActivity extends AppCompatActivity
 
     @Override
     public void onClickReply(Long tweetId) {
-        // create fragment manager
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // pass user information to dialog
-        ReplyFragment replyTweet = ReplyFragment.newInstance(tweetId);
-        // create compose tweet dialog
-        replyTweet.show(fragmentManager, "reply_tweet");
+        MyUtils.openReplyDialog(this, tweetId);
     }
 
     @Override
     public void onClickText(Long tweetId) {
-        Intent tweetDetailIntent = new Intent(this, TweetDetailActivity.class);
-        tweetDetailIntent.putExtra("myself", User.account);
-        tweetDetailIntent.putExtra("topTweetId", tweetId);
-        startActivity(tweetDetailIntent);
+        MyUtils.openTweetDetailActivity(this, tweetId);
+    }
+
+    @Override
+    public void onClickUser(User selectedUser) {
+        // Do nothing if we are already in this user's profile page
+        if(selectedUser.id != this.user.id) {
+            MyUtils.openProfileActivity(this, selectedUser);
+        }
     }
 
     @Override
     public void onClickFollowing(Long userId) {
-
+        // open following list
     }
 
     @Override
     public void onClickFollower(Long userId) {
-
+        // open follower list
     }
 
     @Override
     public void onClickProfilePicture(Long userId) {
-
+        // open profile picture
     }
 }

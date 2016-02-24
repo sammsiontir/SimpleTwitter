@@ -1,9 +1,7 @@
 package com.codepath.apps.simpletwitter.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -126,18 +124,11 @@ public class TimelineActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.action_tweet:
-                // create fragment manager
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                // pass user information to dialog
-                TweetFragment composeTweet = TweetFragment.newInstance(User.account);
-                // create compose tweet dialog
-                composeTweet.show(fragmentManager, "compose_tweet");
+                MyUtils.openComposeDialog(this);
                 return true;
 
             case R.id.action_profile:
-                Intent profileIntent = new Intent(this, ProfileActivity.class);
-                profileIntent.putExtra("user", User.account);
-                startActivity(profileIntent);
+                MyUtils.openProfileActivity(this, User.account);
                 return true;
 
             default:
@@ -149,27 +140,20 @@ public class TimelineActivity extends AppCompatActivity
     public void onSubmitTweet(String inputText) {
         postTweet(inputText);
     }
-
     @Override
     public void onSubmitReply(String inputText, Long id) {
         replyTweet(inputText, id);
     }
-
     @Override
     public void onClickReply(Long tweetId) {
-        // create fragment manager
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // pass user information to dialog
-        ReplyFragment replyTweet = ReplyFragment.newInstance(tweetId);
-        // create compose tweet dialog
-        replyTweet.show(fragmentManager, "reply_tweet");
+        MyUtils.openReplyDialog(this, tweetId);
     }
-
     @Override
     public void onClickText(Long tweetId) {
-        Intent tweetDetailIntent = new Intent(this, TweetDetailActivity.class);
-        tweetDetailIntent.putExtra("myself", User.account);
-        tweetDetailIntent.putExtra("topTweetId", tweetId);
-        startActivity(tweetDetailIntent);
+        MyUtils.openTweetDetailActivity(this, tweetId);
+    }
+    @Override
+    public void onClickUser(User user) {
+        MyUtils.openProfileActivity(this, user);
     }
 }

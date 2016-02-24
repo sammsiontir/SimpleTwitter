@@ -1,9 +1,16 @@
 package com.codepath.apps.simpletwitter;
 
+import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
+import com.codepath.apps.simpletwitter.activities.ProfileActivity;
+import com.codepath.apps.simpletwitter.activities.TweetDetailActivity;
+import com.codepath.apps.simpletwitter.fragments.ReplyFragment;
+import com.codepath.apps.simpletwitter.fragments.TweetFragment;
 import com.codepath.apps.simpletwitter.models.User;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -16,6 +23,36 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class MyUtils {
+    public static void openProfileActivity(AppCompatActivity activity, User user) {
+        Intent profileIntent = new Intent(activity, ProfileActivity.class);
+        profileIntent.putExtra("user", user);
+        activity.startActivity(profileIntent);
+    }
+
+    public static void openTweetDetailActivity(AppCompatActivity activity, Long tweetId) {
+        Intent tweetDetailIntent = new Intent(activity, TweetDetailActivity.class);
+        tweetDetailIntent.putExtra("topTweetId", tweetId);
+        activity.startActivity(tweetDetailIntent);
+    }
+
+    public static void openReplyDialog(AppCompatActivity activity, Long tweetId) {
+        // create fragment manager
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        // pass user information to dialog
+        ReplyFragment replyTweet = ReplyFragment.newInstance(tweetId);
+        // create compose tweet dialog
+        replyTweet.show(fragmentManager, "reply_tweet");
+    }
+
+    public static void openComposeDialog(AppCompatActivity activity) {
+        // create fragment manager
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        // pass user information to dialog
+        TweetFragment composeTweet = TweetFragment.newInstance(User.account);
+        // create compose tweet dialog
+        composeTweet.show(fragmentManager, "compose_tweet");
+    }
+
     // Get current user account
     public static void getMyAccount() {
         TwitterApplication.getRestClient().getMyAccount(new JsonHttpResponseHandler() {

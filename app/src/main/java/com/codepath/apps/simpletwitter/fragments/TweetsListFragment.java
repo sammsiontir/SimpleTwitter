@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
+import com.codepath.apps.simpletwitter.models.User;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public abstract class TweetsListFragment extends Fragment {
     public interface TweetsListOnClickListener {
         void onClickReply(Long tweetId);
         void onClickText(Long tweetId);
+        void onClickUser(User user);
     }
 
     public abstract void onScrollingDown();
@@ -92,11 +94,15 @@ public abstract class TweetsListFragment extends Fragment {
             public void onClickReply(Long tweetId) {
                 listener.onClickReply(tweetId);
             }
-
             @Override
             public void onClickText(Long tweetId) {
                 listener.onClickText(tweetId);
             }
+            @Override
+            public void onClickUser(User user) {
+                listener.onClickUser(user);
+            }
+
         };
     }
 

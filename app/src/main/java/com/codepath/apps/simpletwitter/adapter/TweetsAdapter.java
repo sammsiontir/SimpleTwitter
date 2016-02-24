@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.models.Tweet;
+import com.codepath.apps.simpletwitter.models.User;
 import com.codepath.apps.simpletwitter.models.ViewHolderTweet;
 
 import java.util.List;
@@ -44,8 +45,27 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
                 .load(tweet.user.profile_image_url)
                 .fitCenter()
                 .into(holder.ivProfilePicture);
+        holder.ivProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickUser(Tweet.hashTweets.get(tweetId).user);
+            }
+        });
+
         holder.tvUsername.setText(tweet.user.name);
+        holder.tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickUser(Tweet.hashTweets.get(tweetId).user);
+            }
+        });
         holder.tvScreenName.setText("@" + tweet.user.screen_name);
+        holder.tvScreenName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickUser(Tweet.hashTweets.get(tweetId).user);
+            }
+        });
         holder.tvCreateTime.setText(MyUtils.getRelativeTimeAgo(tweet.created_at));
         // Bind text field
         holder.tvTweetText.setText(tweet.text);
@@ -85,6 +105,6 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
     // Button OnClick Listener
     public abstract void onClickReply(Long tweetId);
     public abstract void onClickText(Long tweetId);
-
+    public abstract void onClickUser(User user);
 
 }
