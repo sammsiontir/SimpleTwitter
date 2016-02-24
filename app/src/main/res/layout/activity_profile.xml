@@ -22,14 +22,32 @@
                 android:layout_height="30dp"
                 android:layout_width="match_parent"
                 android:background="@color/twitter_white"
-                app:layout_collapseMode="parallax"/>
+                app:layout_collapseMode="pin"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@color/twitter_white"
-                android:id="@+id/ivProfileBanner"
-                app:layout_collapseMode="parallax" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="parallax" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/twitter_white"
+                    android:id="@+id/ivProfileBanner"
+                    app:layout_collapseMode="parallax" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="130dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/flProfileHolder"
+                    app:layout_behavior="com.codepath.apps.simpletwitter.ScrollAwareFABBehavior">
+                </FrameLayout>
+            </RelativeLayout>
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

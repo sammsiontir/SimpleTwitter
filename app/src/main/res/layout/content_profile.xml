@@ -8,15 +8,6 @@
     tools:context="com.codepath.apps.simpletwitter.activities.ProfileActivity"
     tools:showIn="@layout/activity_profile">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/flProfileHolder">
-    </FrameLayout>
-
     <com.astuetz.PagerSlidingTabStrip
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -24,7 +15,6 @@
         android:id="@+id/tabsProfile"
         app:pstsShouldExpand="true"
         app:pstsTextAllCaps="false"
-        android:layout_below="@+id/flProfileHolder"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
