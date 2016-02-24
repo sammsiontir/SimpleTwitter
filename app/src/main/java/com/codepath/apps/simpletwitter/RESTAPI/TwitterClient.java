@@ -33,6 +33,7 @@ public class TwitterClient extends OAuthBaseClient {
     public static final String GET_HOMETIMELINE_URL      = "statuses/home_timeline.json";
     public static final String GET_USER_TIMELINE_URL     = "statuses/user_timeline.json";
     public static final String GET_USER_FAVORITE_URL     = "favorites/list.json";
+    public static final String GET_USER_PROFILE_BANNER   = "users/profile_banner.json";
 	public static final String GET_TWEET_URL             = "statuses/show.json";
 	public static final String GET_MY_ACCOUNT_URL        = "account/verify_credentials.json";
 	public static final String GET_TWEET_SEARCH          = "search/tweets.json";  //
@@ -140,6 +141,18 @@ public class TwitterClient extends OAuthBaseClient {
 		}
 		getClient().get(apiUrl, params, handler);
 	}
+
+    // Get profile banner image
+    public void getProfileBanner(long user_id, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_PROFILE_BANNER);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
+
+
 
 	// Post new tweet
 	public void postStatusUpdate(String status, long id, AsyncHttpResponseHandler handler) {

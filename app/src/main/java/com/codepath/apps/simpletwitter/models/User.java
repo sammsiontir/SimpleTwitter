@@ -15,7 +15,6 @@ public class User implements Parcelable {
     public int friends_count;
     public long id;
     public Entity entities;
-    public String profile_background_image_url;
 
 
     @Override
@@ -34,7 +33,6 @@ public class User implements Parcelable {
         dest.writeInt(this.friends_count);
         dest.writeLong(this.id);
         dest.writeParcelable(this.entities, flags);
-        dest.writeString(this.profile_background_image_url);
     }
 
     public User() {
@@ -50,7 +48,6 @@ public class User implements Parcelable {
         this.friends_count = in.readInt();
         this.id = in.readLong();
         this.entities = in.readParcelable(Entity.class.getClassLoader());
-        this.profile_background_image_url = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
@@ -28,6 +30,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -37,10 +40,12 @@ public class ProfileActivity extends AppCompatActivity
         implements TweetFragment.TweetComposeListener, ReplyFragment.TweetReplyListener
         , HomeTimelineFragment.TweetsListOnClickListener, ProfileFragment.ProfileOnClickListener {
     private User user;
+    private String bannerUrl;
     private ProfilePagerAdapter profilePagerAdapter;
 
     @Bind(R.id.tabsProfile) PagerSlidingTabStrip tabsProfile;
     @Bind(R.id.vpProfilePager) ViewPager vpProfilePager;
+    @Bind(R.id.ivProfileBanner) ImageView ivProfileBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity
         setContentView(R.layout.activity_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +79,11 @@ public class ProfileActivity extends AppCompatActivity
         ProfileFragment profileFragment = ProfileFragment.newInstance(user);
         ft.replace(R.id.flProfileHolder, profileFragment);
         ft.commit();
+
+        // Bind profile background image
+        getProfileBannerUrl(user.id, this);
+//        bannerUrlTemp = "https://pbs.twimg.com/profile_banners/215318899/1456062009/mobile";
+
     }
 
     private void postTweet(String status) {
@@ -188,5 +199,30 @@ public class ProfileActivity extends AppCompatActivity
     @Override
     public void onClickProfilePicture(Long userId) {
         // open profile picture
+    }
+
+    public void getProfileBannerUrl(Long userId, final AppCompatActivity activity) {
+        TwitterApplication.getRestClient().getProfileBanner(userId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    Log.d("DEBUG", response.toString());
+                    bannerUrl = response.getJSONObject("sizes").getJSONObject("mobile").getString("url");
+                    Log.d("DEBUG", bannerUrl);
+                    Glide.with(activity)
+                            .load(bannerUrl)
+                            .centerCrop()
+                            .into(ivProfileBanner);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
     }
 }

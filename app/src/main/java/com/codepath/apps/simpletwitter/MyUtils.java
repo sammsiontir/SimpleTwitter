@@ -88,8 +88,8 @@ public class MyUtils {
         // Special Case: Yesterday
         if (relativeDate.equals("Yesterday")) {
             String res = "1 d";
-            Log.d("DEBUG: relativeDate = ", relativeDate);
-            Log.d("DEBUG: relativeDate = ", res);
+            //Log.d("DEBUG: relativeDate = ", relativeDate);
+            //Log.d("DEBUG: relativeDate = ", res);
             return res;
         }
 
@@ -104,8 +104,8 @@ public class MyUtils {
                     relativeDate.charAt(pos) == 'm' ||
                     relativeDate.charAt(pos) == 's')
                     && pos + 1 < relativeDate.length()) {
-                Log.d("DEBUG: relativeDate = ", relativeDate);
-                Log.d("DEBUG: relativeDate = ", relativeDate.substring(0, pos+1));
+                //Log.d("DEBUG: relativeDate = ", relativeDate);
+                //Log.d("DEBUG: relativeDate = ", relativeDate.substring(0, pos+1));
                 return relativeDate.substring(0, pos+1);
             }
         }
@@ -118,8 +118,8 @@ public class MyUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.d("DEBUG: relativeDate = ", relativeDate);
-        Log.d("DEBUG: reformatted = ", reformattedStr);
+        //Log.d("DEBUG: relativeDate = ", relativeDate);
+        //Log.d("DEBUG: reformatted = ", reformattedStr);
         return reformattedStr;
     }
 }
