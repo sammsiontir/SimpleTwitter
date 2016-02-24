@@ -39,7 +39,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
     private void clearAllTweets() {
         // clear all tweets in local data member
-        homeTimelineTweets.clear();
+        tweetsIdArray.clear();
     }
 
     private void loadLatestTweets() {
@@ -60,12 +60,12 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                     // update moreTweets to hashTweets only
                     moreTweets.get(i).update();
                     // store data
-                    homeTimelineTweets.add(moreTweets.get(i).id);
+                    tweetsIdArray.add(moreTweets.get(i).id);
                 }
                 // notify the adapter
                 tweetsAdapter.notifyDataSetChanged();
                 // clear refresh mark if calling by swipe to refresh
-                srHomeTimeline.setRefreshing(false);
+                srTimeline.setRefreshing(false);
             }
 
             @Override
@@ -95,11 +95,11 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                     // update moreTweets to hashTweets only
                     moreTweets.get(i).update();
                     // store data and notify the adapter
-                    homeTimelineTweets.add(moreTweets.get(i).id);
+                    tweetsIdArray.add(moreTweets.get(i).id);
                 }
                 // notify the adapter
                 int curSize = tweetsAdapter.getItemCount();
-                tweetsAdapter.notifyItemRangeInserted(curSize, homeTimelineTweets.size() - 1);
+                tweetsAdapter.notifyItemRangeInserted(curSize, tweetsIdArray.size() - 1);
             }
 
             @Override

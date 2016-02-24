@@ -22,10 +22,10 @@ import butterknife.ButterKnife;
 
 public abstract class TweetsListFragment extends Fragment {
     protected TweetsAdapter tweetsAdapter;
-    protected ArrayList<Long> homeTimelineTweets;
+    protected ArrayList<Long> tweetsIdArray;
 
-    @Bind(R.id.srHomeTimeline) SwipeRefreshLayout srHomeTimeline;
-    @Bind(R.id.rvHomeTimeline) RecyclerView rvHomeTimeline;
+    @Bind(R.id.srTimeline) SwipeRefreshLayout srTimeline;
+    @Bind(R.id.rvTimeline) RecyclerView rvTimeline;
 
     private TweetsListOnClickListener listener;
 
@@ -57,14 +57,14 @@ public abstract class TweetsListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Bind with swipe to refresh
-        srHomeTimeline.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        srTimeline.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 onPullToRefresh();
             }
         });
         // Configure the refreshing colors
-        srHomeTimeline.setColorSchemeResources(android.R.color.holo_blue_bright,
+        srTimeline.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -72,9 +72,9 @@ public abstract class TweetsListFragment extends Fragment {
         // Setup adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // Bind Recycle view with tweets
-        rvHomeTimeline.setAdapter(tweetsAdapter);
-        rvHomeTimeline.setLayoutManager(linearLayoutManager);
-        rvHomeTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        rvTimeline.setAdapter(tweetsAdapter);
+        rvTimeline.setLayoutManager(linearLayoutManager);
+        rvTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 onScrollingDown();
@@ -88,8 +88,8 @@ public abstract class TweetsListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Initial data and adapter
-        homeTimelineTweets = new ArrayList<>();
-        tweetsAdapter = new TweetsAdapter(homeTimelineTweets) {
+        tweetsIdArray = new ArrayList<>();
+        tweetsAdapter = new TweetsAdapter(tweetsIdArray) {
             @Override
             public void onClickReply(Long tweetId) {
                 listener.onClickReply(tweetId);
@@ -109,11 +109,11 @@ public abstract class TweetsListFragment extends Fragment {
     }
 
     public void add(int position, Long tweetId) {
-        homeTimelineTweets.add(position, tweetId);
+        tweetsIdArray.add(position, tweetId);
         tweetsAdapter.notifyItemInserted(position);
     }
 
     public void scrollToPosition(int position) {
-        rvHomeTimeline.scrollToPosition(position);
+        rvTimeline.scrollToPosition(position);
     }
 }

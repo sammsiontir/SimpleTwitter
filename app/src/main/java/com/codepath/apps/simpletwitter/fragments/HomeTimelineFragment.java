@@ -26,7 +26,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
         // Get Home timeline
         List<Long> queryResults = TweetDB.getRecentTweets(100);
         if(queryResults != null && !queryResults.isEmpty()) {
-            homeTimelineTweets.addAll(queryResults);
+            tweetsIdArray.addAll(queryResults);
             tweetsAdapter.notifyDataSetChanged();
             Toast.makeText(getActivity(), "Load from DB", Toast.LENGTH_LONG).show();
         }
@@ -53,7 +53,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
         // clear all tweets in DB
         new Delete().from(TweetDB.class).execute();
         // clear all tweets in local data member
-        homeTimelineTweets.clear();
+        tweetsIdArray.clear();
     }
 
     private void loadLatestTweets() {
@@ -74,14 +74,13 @@ public class HomeTimelineFragment extends TweetsListFragment {
                     // updateToDB moreTweets to DB
                     moreTweets.get(i).updateToDB();
                     // store data
-                    homeTimelineTweets.add(moreTweets.get(i).id);
+                    tweetsIdArray.add(moreTweets.get(i).id);
                 }
                 // notify the adapter
                 tweetsAdapter.notifyDataSetChanged();
                 // clear refresh mark if calling by swipe to refresh
-                srHomeTimeline.setRefreshing(false);
+                srTimeline.setRefreshing(false);
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONArray errorResponse) {
@@ -109,14 +108,12 @@ public class HomeTimelineFragment extends TweetsListFragment {
                     // updateToDB moreTweets to DB
                     moreTweets.get(i).updateToDB();
                     // store data and notify the adapter
-                    homeTimelineTweets.add(moreTweets.get(i).id);
+                    tweetsIdArray.add(moreTweets.get(i).id);
                 }
                 // notify the adapter
                 int curSize = tweetsAdapter.getItemCount();
-                tweetsAdapter.notifyItemRangeInserted(curSize, homeTimelineTweets.size() - 1);
+                tweetsAdapter.notifyItemRangeInserted(curSize, tweetsIdArray.size() - 1);
             }
-
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONArray errorResponse) {
