@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
+import com.codepath.apps.simpletwitter.adapter.TweetsPagerAdapter;
 import com.codepath.apps.simpletwitter.fragments.HomeTimelineFragment;
 import com.codepath.apps.simpletwitter.fragments.ReplyFragment;
 import com.codepath.apps.simpletwitter.fragments.TweetFragment;
@@ -33,9 +36,8 @@ public class TimelineActivity extends AppCompatActivity
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
-
-    HomeTimelineFragment homeTimelineFragment;
-
+    @Bind(R.id.vpHMPager) ViewPager vpHMPager;
+    @Bind(R.id.tabsHM) PagerSlidingTabStrip tabsHM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +51,14 @@ public class TimelineActivity extends AppCompatActivity
         getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
 
 
-        // Bind with Home Timeline Fragment
-        if(savedInstanceState == null) {
-            homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.fragment_home_timeline);
-        }
+        // Bind vpHMPager & tabsHM
+        vpHMPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        tabsHM.setViewPager(vpHMPager);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeTimelineFragment.scrollToPosition(0);
+                // homeTimelineFragment.scrollToPosition(0);
             }
         });
 
@@ -90,12 +90,12 @@ public class TimelineActivity extends AppCompatActivity
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
-                // update DB
-                tweet.update();
-                // update timeline
-                homeTimelineFragment.add(0, tweet.id);
-                // update moreTweets to DB
-                tweet.update();
+                // updateToDB DB
+                tweet.updateToDB();
+                // updateToDB timeline
+                // homeTimelineFragment.add(0, tweet.id);
+                // updateToDB moreTweets to DB
+                tweet.updateToDB();
             }
 
             @Override
@@ -115,10 +115,10 @@ public class TimelineActivity extends AppCompatActivity
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
-                // update DB
-                tweet.update();
-                // update timeline
-                homeTimelineFragment.add(0, tweet.id);
+                // updateToDB DB
+                tweet.updateToDB();
+                // updateToDB timeline
+                // homeTimelineFragment.add(0, tweet.id);
             }
 
             @Override

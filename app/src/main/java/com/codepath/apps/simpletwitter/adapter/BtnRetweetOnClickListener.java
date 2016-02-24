@@ -24,21 +24,21 @@ public class BtnRetweetOnClickListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (Tweet.hashTweets.get(this.tweetId).retweeted) {
-            // update server
+            // updateToDB server
             postUnRetweet(this.tweetId);
-            // update local database
+            // updateToDB local database
             Tweet.hashTweets.get(this.tweetId).unretweet();
-            // update views
+            // updateToDB views
             holder.ibRetweet.setSelected(false);
             holder.tvRetweetCount.setSelected(false);
             holder.tvRetweetCount.setText(Integer.toString(Tweet.hashTweets.get(this.tweetId).retweet_count));
 
         } else {
-            // update server
+            // updateToDB server
             postRetweet(this.tweetId);
-            // update local database
+            // updateToDB local database
             Tweet.hashTweets.get(this.tweetId).retweet();
-            // update views
+            // updateToDB views
             holder.ibRetweet.setSelected(true);
             holder.tvRetweetCount.setSelected(true);
             holder.tvRetweetCount.setText(Integer.toString(Tweet.hashTweets.get(this.tweetId).retweet_count));
@@ -52,7 +52,7 @@ public class BtnRetweetOnClickListener implements View.OnClickListener {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
-                //tweet.update();
+                //tweet.updateToDB();
                 Log.d("DEBUG", response.toString());
             }
 
@@ -72,7 +72,7 @@ public class BtnRetweetOnClickListener implements View.OnClickListener {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
-                tweet.update();
+                tweet.updateToDB();
                 Log.d("DEBUG", response.toString());
             }
 

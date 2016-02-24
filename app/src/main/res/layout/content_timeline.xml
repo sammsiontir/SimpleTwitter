@@ -9,13 +9,19 @@
     tools:context=".activities.TimelineActivity"
     tools:showIn="@layout/activity_timeline" >
 
-    <fragment
-        android:layout_width="wrap_content"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabsHM"
+        app:pstsShouldExpand="true"
+        app:pstsTextAllCaps="true"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:fillViewport="false" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpHMPager"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.codepath.apps.simpletwitter.fragments.HomeTimelineFragment"
-        android:id="@+id/fragment_home_timeline"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        tools:layout="@layout/fragment_tweets_list" />
+        android:layout_below="@id/tabsHM"
+        android:background="@android:color/white" />
+
 </RelativeLayout>

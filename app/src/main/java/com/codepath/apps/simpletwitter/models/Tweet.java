@@ -29,12 +29,17 @@ public class Tweet {
 
 
     // Update Database
-    public void update() {
-        // update hashTweets
-        hashTweets.put(this.id, this);
-        // update DB
+    public void updateToDB() {
+        // updateToDB hashTweets
+        this.update();
+        // updateToDB DB
         TweetDB updateTweetDB = convertToDB();
         updateTweetDB.save();
+    }
+
+    public void update() {
+        // updateToDB hashTweets
+        hashTweets.put(this.id, this);
     }
 
     public TweetDB convertToDB() {
@@ -46,29 +51,29 @@ public class Tweet {
         return tweetDB;
     }
 
-    // update status
+    // updateToDB status
     public void retweet() {
         this.retweet_count++;
         this.retweeted = true;
-        this.update();
+        this.updateToDB();
     }
 
     public void unretweet() {
         this.retweet_count--;
         this.retweeted = false;
-        this.update();
+        this.updateToDB();
     }
 
     public void favorite() {
         this.favorite_count++;
         this.favorited = true;
-        this.update();
+        this.updateToDB();
     }
 
     public void unfavorite() {
         this.favorite_count--;
         this.favorited = false;
-        this.update();
+        this.updateToDB();
     }
 
 }

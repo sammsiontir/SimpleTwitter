@@ -71,8 +71,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
                         }.getType());
 
                 for (int i = 0; i < moreTweets.size(); i++) {
-                    // update moreTweets to DB
-                    moreTweets.get(i).update();
+                    // updateToDB moreTweets to DB
+                    moreTweets.get(i).updateToDB();
                     // store data
                     homeTimelineTweets.add(moreTweets.get(i).id);
                 }
@@ -106,8 +106,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
                         }.getType());
 
                 for (int i = 0; i < moreTweets.size(); i++) {
-                    // update moreTweets to DB
-                    moreTweets.get(i).update();
+                    // updateToDB moreTweets to DB
+                    moreTweets.get(i).updateToDB();
                     // store data and notify the adapter
                     homeTimelineTweets.add(moreTweets.get(i).id);
                 }

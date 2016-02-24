@@ -149,9 +149,9 @@ public class TweetDetailActivity extends AppCompatActivity
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
-                // update DB
-                tweet.update();
-                // update timeline
+                // updateToDB DB
+                tweet.updateToDB();
+                // updateToDB timeline
                 tweetComments.add(0, tweet.id);
                 tweetDetailAdapter.notifyItemInserted(1);
             }

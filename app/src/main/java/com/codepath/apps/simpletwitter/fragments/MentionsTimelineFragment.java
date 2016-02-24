@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.activeandroid.query.Delete;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.models.Tweet;
-import com.codepath.apps.simpletwitter.models.TweetDB;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,22 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MentionsTimelineFragment extends TweetsListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get Home timeline
-        List<Long> queryResults = TweetDB.getRecentTweets(100);
-        if(queryResults != null && !queryResults.isEmpty()) {
-            homeTimelineTweets.addAll(queryResults);
-            tweetsAdapter.notifyDataSetChanged();
-            Toast.makeText(getActivity(), "Load from DB", Toast.LENGTH_LONG).show();
-        }
-        else {
-            loadLatestTweets();
-        }
+        // Get Mentions timeline
+        loadLatestTweets();
     }
 
     @Override
@@ -49,10 +38,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     }
 
     private void clearAllTweets() {
-        // clear hashTweets
-        Tweet.hashTweets.clear();
-        // clear all tweets in DB
-        new Delete().from(TweetDB.class).execute();
         // clear all tweets in local data member
         homeTimelineTweets.clear();
     }
@@ -72,7 +57,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                         }.getType());
 
                 for (int i = 0; i < moreTweets.size(); i++) {
-                    // update moreTweets to DB
+                    // update moreTweets to hashTweets only
                     moreTweets.get(i).update();
                     // store data
                     homeTimelineTweets.add(moreTweets.get(i).id);
@@ -107,7 +92,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                         }.getType());
 
                 for (int i = 0; i < moreTweets.size(); i++) {
-                    // update moreTweets to DB
+                    // update moreTweets to hashTweets only
                     moreTweets.get(i).update();
                     // store data and notify the adapter
                     homeTimelineTweets.add(moreTweets.get(i).id);
