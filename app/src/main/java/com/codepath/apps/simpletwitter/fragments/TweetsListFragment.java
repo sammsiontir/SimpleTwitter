@@ -25,7 +25,7 @@ public abstract class TweetsListFragment extends Fragment {
     protected ArrayList<Long> tweetsIdArray;
     protected TweetsListOnClickListener listener;
 
-    @Bind(R.id.rvTimeline) RecyclerView rvTimeline;
+    @Bind(R.id.rvList) RecyclerView rvTimeline;
 
     public interface TweetsListOnClickListener {
         void onClickReply(Long tweetId);
@@ -51,7 +51,7 @@ public abstract class TweetsListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tweets_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         // Bind views
         ButterKnife.bind(this, view);
 

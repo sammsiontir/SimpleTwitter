@@ -63,7 +63,16 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.UsersListActivity"
+            android:label="@string/title_activity_users_list"
+            android:parentActivityName=".activities.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codepath.apps.simpletwitter.activities.ProfileActivity" />
+        </activity>
     </application>
 
 </manifest>

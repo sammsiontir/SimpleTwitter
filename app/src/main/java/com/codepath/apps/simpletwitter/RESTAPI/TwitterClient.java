@@ -29,14 +29,25 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_SECRET = "HOnHnaeuB4OAkcVYgbfONxrJdOjv6mjI0WWyC74EukWOeSM02Q";
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
+    // GET Tweets
     public static final String GET_MENTIONS_TIMELINE_URL = "statuses/mentions_timeline.json";
     public static final String GET_HOMETIMELINE_URL      = "statuses/home_timeline.json";
     public static final String GET_USER_TIMELINE_URL     = "statuses/user_timeline.json";
     public static final String GET_USER_FAVORITE_URL     = "favorites/list.json";
+    public static final String GET_TWEET_URL             = "statuses/show.json";
+
+    // Search
+    public static final String GET_TWEET_SEARCH          = "search/tweets.json";
+
+    // GET Users
+    public static final String GET_MY_ACCOUNT_URL        = "account/verify_credentials.json";
     public static final String GET_USER_PROFILE_BANNER   = "users/profile_banner.json";
-	public static final String GET_TWEET_URL             = "statuses/show.json";
-	public static final String GET_MY_ACCOUNT_URL        = "account/verify_credentials.json";
-	public static final String GET_TWEET_SEARCH          = "search/tweets.json";  //
+	public static final String GET_USER_FRIENDS_LIST     = "friends/ids.json";
+    public static final String GET_USER_FOLLOWERS_LIST   = "followers/ids.json";
+    public static final String GET_USER_URL              = "users/show.json";
+    public static final String GET_USER_LOOKUP_URL       = "users/lookup.json";
+
+    // POST
 	public static final String POST_UPDATE_URL           = "statuses/update.json";
 	public static final String POST_RETWEET_URL          = "statuses/retweet/"; // + id + JSON
 	public static final String POST_UNRETWEET_URL        = "statuses/unretweet/"; // +id + JSON
@@ -152,6 +163,50 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    // Get users loop up
+    public void getUsersLookup(String user_ids, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_LOOKUP_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_ids);
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    // Get user's friends list
+    public void getFriendList(Long user_id, String cursor, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_FRIENDS_LIST);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        params.put("stringify_ids", true);
+        params.put("count", 20);
+        params.put("cursor", cursor);
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getFollowerList(Long user_id, Long cursor, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_FOLLOWERS_LIST);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        params.put("count", 100);
+        if(cursor > -1) {
+            params.put("cursor", cursor);
+        }
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUser(Long user_id, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_USER_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        // Execute request
+        getClient().get(apiUrl, params, handler);
+    }
 
 
 	// Post new tweet
@@ -207,12 +262,3 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().post(apiUrl, params, handler);
 	}
 }
-
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */

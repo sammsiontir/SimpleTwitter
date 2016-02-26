@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletwitter.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -166,6 +167,10 @@ public class ProfileActivity extends AppCompatActivity
     @Override
     public void onClickFollowing(Long userId) {
         // open following list
+        Intent i = new Intent(this, UsersListActivity.class);
+        i.putExtra("user", user);
+        i.putExtra("mode", 0);
+        startActivity(i);
     }
 
     @Override

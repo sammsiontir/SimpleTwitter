@@ -21,7 +21,6 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
     public TweetsAdapter(List<Long> tweets) {
         this.tweets = tweets;
     }
-
     public List<Long> getTweets() {
         return tweets;
     }
