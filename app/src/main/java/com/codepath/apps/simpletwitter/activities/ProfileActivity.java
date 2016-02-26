@@ -159,6 +159,11 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     @Override
+    public void endPullToRefresh() {
+
+    }
+
+    @Override
     public void onClickFollowing(Long userId) {
         // open following list
     }

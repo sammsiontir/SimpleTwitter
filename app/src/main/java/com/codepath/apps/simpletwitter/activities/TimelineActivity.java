@@ -3,6 +3,7 @@ package com.codepath.apps.simpletwitter.activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class TimelineActivity extends AppCompatActivity
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
+    @Bind(R.id.srTimeline) SwipeRefreshLayout srTimeline;
     @Bind(R.id.vpHMPager) ViewPager vpHMPager;
     @Bind(R.id.tabsHM) PagerSlidingTabStrip tabsHM;
 
@@ -56,6 +58,21 @@ public class TimelineActivity extends AppCompatActivity
         tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
         vpHMPager.setAdapter(tweetsPagerAdapter);
         tabsHM.setViewPager(vpHMPager);
+
+        // Set up swipe refresh behavior
+        // Bind with swipe to refresh
+        srTimeline.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                tweetsPagerAdapter.onPullToRefresh(vpHMPager);
+            }
+        });
+        // Configure the refreshing colors
+        srTimeline.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 
         // set floating button behavior
         fab.setOnClickListener(new View.OnClickListener() {
@@ -159,4 +176,9 @@ public class TimelineActivity extends AppCompatActivity
     public void onClickUser(User user) {
         MyUtils.openProfileActivity(this, user);
     }
+    @Override
+    public void endPullToRefresh() {
+        srTimeline.setRefreshing(false);
+    }
+
 }

@@ -76,7 +76,7 @@ public class FavoriteTimelineFragment extends TweetsListFragment {
                 // notify the adapter
                 tweetsAdapter.notifyDataSetChanged();
                 // clear refresh mark if calling by swipe to refresh
-                srTimeline.setRefreshing(false);
+                //Todo: srTimeline.setRefreshing(false);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable

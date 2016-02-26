@@ -9,19 +9,34 @@
     tools:context=".activities.TimelineActivity"
     tools:showIn="@layout/activity_timeline" >
 
-    <com.astuetz.PagerSlidingTabStrip
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srTimeline"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:fillViewport="false"
-        android:id="@+id/tabsHM"
-        app:pstsShouldExpand="true"
-        app:pstsTextAllCaps="true" />
+        android:layout_height="match_parent" >
 
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/vpHMPager"
-        android:background="@android:color/white"
-        android:layout_below="@id/tabsHM" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.astuetz.PagerSlidingTabStrip
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fillViewport="false"
+                android:id="@+id/tabsHM"
+                app:pstsShouldExpand="true"
+                app:pstsTextAllCaps="true" />
+
+            <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/vpHMPager"
+                android:background="@android:color/white"
+                android:layout_below="@id/tabsHM" />
+        </RelativeLayout>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </RelativeLayout>

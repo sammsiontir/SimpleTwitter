@@ -79,7 +79,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 // notify the adapter
                 tweetsAdapter.notifyDataSetChanged();
                 // clear refresh mark if calling by swipe to refresh
-                srTimeline.setRefreshing(false);
+                listener.endPullToRefresh();
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable

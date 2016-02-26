@@ -64,4 +64,18 @@ public class TweetsPagerAdapter extends SmartFragmentStatePagerAdapter {
             Log.d("DEBUG", "TweetsPagerAdapter choose instanceof error");
         }
     }
+
+    public void onPullToRefresh(ViewPager viewPager) {
+        Object obj = this.getRegisteredFragment(viewPager.getCurrentItem());
+        if(obj instanceof HomeTimelineFragment) {
+            ((HomeTimelineFragment) obj).onPullToRefresh();
+        }
+        else if (obj instanceof MentionsTimelineFragment) {
+            ((MentionsTimelineFragment) obj).onPullToRefresh();
+        }
+        else {
+            // do nothing but log debug message
+            Log.d("DEBUG", "TweetsPagerAdapter choose instanceof error");
+        }
+    }
 }

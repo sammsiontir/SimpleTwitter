@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,15 +23,15 @@ import butterknife.ButterKnife;
 public abstract class TweetsListFragment extends Fragment {
     protected TweetsAdapter tweetsAdapter;
     protected ArrayList<Long> tweetsIdArray;
-    private TweetsListOnClickListener listener;
+    protected TweetsListOnClickListener listener;
 
-    @Bind(R.id.srTimeline) SwipeRefreshLayout srTimeline;
     @Bind(R.id.rvTimeline) RecyclerView rvTimeline;
 
     public interface TweetsListOnClickListener {
         void onClickReply(Long tweetId);
         void onClickText(Long tweetId);
         void onClickUser(User user);
+        void endPullToRefresh();
     }
 
     public abstract void onScrollingDown();
@@ -55,19 +54,6 @@ public abstract class TweetsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         // Bind views
         ButterKnife.bind(this, view);
-
-        // Bind with swipe to refresh
-        srTimeline.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                onPullToRefresh();
-            }
-        });
-        // Configure the refreshing colors
-        srTimeline.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
 
         // Setup adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
