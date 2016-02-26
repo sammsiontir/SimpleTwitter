@@ -24,9 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ReplyFragment extends DialogFragment {
-    private static final int TWEET_MAX_LENGTH = 140;
     private static final String REPLYSTATUSPREFIX = "In Reply to ";
-    private int REPLY_PREFIX_COUNT = 0;
 
     @Bind(R.id.ivProfilePicture) ImageView ivProfilePictureCompose;
     @Bind(R.id.tvUsernameCompose) TextView tvUsernameCompose;
@@ -84,7 +82,6 @@ public class ReplyFragment extends DialogFragment {
 
         // Set Text field
         String replyString = "@" + tweet.user.screen_name + " ";
-        REPLY_PREFIX_COUNT = replyString.length();
         etComposeText.setText(replyString);
         setComposeTextField();
 
