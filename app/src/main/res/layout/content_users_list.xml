@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/twitter_light_gray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.codepath.apps.simpletwitter.activities.UsersListActivity"
-    tools:showIn="@layout/activity_users_list">
+    tools:showIn="@layout/activity_users_list"
+    android:orientation="vertical">
 
 
     <FrameLayout
@@ -20,8 +21,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/flUserListHolder">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="40dp"
@@ -32,4 +32,4 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
