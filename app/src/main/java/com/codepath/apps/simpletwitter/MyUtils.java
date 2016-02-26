@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.activities.ProfileActivity;
@@ -23,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class MyUtils {
+    public static final int TWEET_MAX_LENGTH = 140;
+
     public static void openProfileActivity(AppCompatActivity activity, User user) {
         Intent profileIntent = new Intent(activity, ProfileActivity.class);
         profileIntent.putExtra("user", user);
@@ -61,6 +65,7 @@ public class MyUtils {
                 Gson gson = new Gson();
                 User.account = gson.fromJson(response.toString(), User.class);
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
@@ -69,6 +74,15 @@ public class MyUtils {
             }
         });
     }
+
+    // Calculate remaining word length
+    public static int setRemainingEditTextLength(EditText editText, TextView textView) {
+        String input = editText.getText().toString();
+        int remain = TWEET_MAX_LENGTH - input.length();
+        textView.setText(Integer.toString(remain));
+        return remain;
+    }
+
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
     public static String getRelativeTimeAgo(String rawJsonDate) {

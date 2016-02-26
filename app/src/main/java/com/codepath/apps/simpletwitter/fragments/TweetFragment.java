@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.models.User;
 
@@ -23,8 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TweetFragment extends DialogFragment {
-    private static final int TWEET_MAX_LENGTH = 140;
-
     @Bind(R.id.ivProfilePicture) ImageView ivProfilePictureCompose;
     @Bind(R.id.tvUsernameCompose) TextView tvUsernameCompose;
     @Bind(R.id.tvScreenNameCompose) TextView tvScreenNameCompose;
@@ -123,16 +121,7 @@ public class TweetFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String input = etComposeText.getText().toString();
-                int remain = TWEET_MAX_LENGTH - input.length();
-                if (remain <= 0 || remain == TWEET_MAX_LENGTH) {
-                    Log.d("DEBUG_false", Integer.toString(remain));
-                    btnTweet.setEnabled(false);
-                } else {
-                    Log.d("DEBUG_true", Integer.toString(remain));
-                    btnTweet.setEnabled(true);
-                }
-                tvCharLeft.setText(Integer.toString(remain));
+                setTextFieldStatus();
             }
 
             @Override
@@ -140,6 +129,16 @@ public class TweetFragment extends DialogFragment {
 
             }
         });
+    }
+
+    private void setTextFieldStatus() {
+        int remain = MyUtils.setRemainingEditTextLength(etComposeText, tvCharLeft);
+        // Set submit button
+        if (remain <= 0 || remain == MyUtils.TWEET_MAX_LENGTH) {
+            btnTweet.setEnabled(false);
+        } else {
+            btnTweet.setEnabled(true);
+        }
     }
 
 
