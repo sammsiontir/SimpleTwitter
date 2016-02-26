@@ -5,14 +5,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.activities.ProfileActivity;
 import com.codepath.apps.simpletwitter.activities.TweetDetailActivity;
+import com.codepath.apps.simpletwitter.activities.TwitterBaseActivity;
 import com.codepath.apps.simpletwitter.fragments.ReplyFragment;
 import com.codepath.apps.simpletwitter.fragments.TweetFragment;
+import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -57,6 +61,50 @@ public class MyUtils {
         composeTweet.show(fragmentManager, "compose_tweet");
     }
 
+    public static void postTweet(final TwitterBaseActivity activity, String status) {
+        TwitterApplication.getRestClient().postStatusUpdate(status, 0, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
+                Log.d("DEBUG", response.toString());
+
+                activity.addTweet(tweet);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
+    }
+
+    public static void replyTweet(final TwitterBaseActivity activity, String status, long id) {
+        Toast.makeText(activity, "Reply", Toast.LENGTH_LONG).show();
+        TwitterApplication.getRestClient().postStatusUpdate(status, id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
+                Log.d("DEBUG", response.toString());
+
+                activity.addTweet(tweet);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable
+                    , JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Log.e("REST_API_ERROR", errorResponse.toString());
+            }
+        });
+    }
+
+
+
     // Get current user account
     public static void getMyAccount() {
         TwitterApplication.getRestClient().getMyAccount(new JsonHttpResponseHandler() {
@@ -88,13 +136,17 @@ public class MyUtils {
 
 
     // Calculate remaining word length
-    public static int setRemainingEditTextLength(EditText editText, TextView textView) {
+    public static void setEditTextLimitation(EditText editText, TextView textView, Button button) {
         String input = editText.getText().toString();
         int remain = TWEET_MAX_LENGTH - input.length();
         textView.setText(Integer.toString(remain));
-        return remain;
+        // Set submit button
+        if (remain <= 0 || remain == MyUtils.TWEET_MAX_LENGTH) {
+            button.setEnabled(false);
+        } else {
+            button.setEnabled(true);
+        }
     }
-
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
     public static String getRelativeTimeAgo(String rawJsonDate) {

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.activities.TwitterBaseActivity;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 
@@ -92,8 +93,7 @@ public class ReplyFragment extends DialogFragment {
             public void onClick(View v) {
                 // remain characters must be in the range for submit tweet
                 String tweetText = etComposeText.getText().toString();
-                TweetReplyListener listener = (TweetReplyListener) getActivity();
-                listener.onSubmitReply(tweetText, id);
+                MyUtils.replyTweet((TwitterBaseActivity) getActivity(), tweetText, id);
                 dismiss();
             }
         });
@@ -113,10 +113,6 @@ public class ReplyFragment extends DialogFragment {
         ButterKnife.unbind(this);
     }
 
-    public interface TweetReplyListener {
-        void onSubmitReply(String inputText, Long id);
-    }
-
     private void setComposeTextField() {
         // call virtual keyboard
         etComposeText.requestFocus();
@@ -131,7 +127,7 @@ public class ReplyFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setTextFieldStatus();
+                MyUtils.setEditTextLimitation(etComposeText, tvCharLeft, btnTweet);
             }
 
             @Override
@@ -139,16 +135,6 @@ public class ReplyFragment extends DialogFragment {
 
             }
         });
-        setTextFieldStatus();
-    }
-
-    private void setTextFieldStatus() {
-        int remain = MyUtils.setRemainingEditTextLength(etComposeText, tvCharLeft);
-        // Set submit button
-        if (remain <= 0 || remain == MyUtils.TWEET_MAX_LENGTH) {
-            btnTweet.setEnabled(false);
-        } else {
-            btnTweet.setEnabled(true);
-        }
+        MyUtils.setEditTextLimitation(etComposeText, tvCharLeft, btnTweet);
     }
 }

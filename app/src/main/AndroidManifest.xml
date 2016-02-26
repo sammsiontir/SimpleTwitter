@@ -48,17 +48,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.TimelineActivity"
+            android:name=".activities.TimelineActivityTwitter"
             android:label="@string/title_activity_timeline"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.TweetDetailActivity"
             android:label="@string/title_activity_tweet_detail"
-            android:parentActivityName=".activities.TimelineActivity"
+            android:parentActivityName=".activities.TimelineActivityTwitter"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.codepath.apps.simpletwitter.activities.TimelineActivity" />
+                android:value=".activities.TimelineActivityTwitter" />
         </activity>
         <activity
             android:name=".activities.ProfileActivity"

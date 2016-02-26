@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.activities.TwitterBaseActivity;
 import com.codepath.apps.simpletwitter.models.User;
 
 import butterknife.Bind;
@@ -44,7 +45,6 @@ public class TweetFragment extends DialogFragment {
         return compose;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class TweetFragment extends DialogFragment {
         View convertView = inflater.inflate(R.layout.fragment_compose, container, false);
         // Bind Views
         ButterKnife.bind(this, convertView);
-
         return convertView;
     }
 
@@ -81,8 +80,7 @@ public class TweetFragment extends DialogFragment {
             public void onClick(View v) {
                 // remain characters must be in the range for submit tweet
                 String tweetText = etComposeText.getText().toString();
-                TweetComposeListener listener = (TweetComposeListener) getActivity();
-                listener.onSubmitTweet(tweetText);
+                MyUtils.postTweet((TwitterBaseActivity) getActivity(), tweetText);
                 dismiss();
             }
         });
@@ -94,17 +92,12 @@ public class TweetFragment extends DialogFragment {
                 dismiss();
             }
         });
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-    }
-
-    public interface TweetComposeListener {
-        void onSubmitTweet(String inputText);
     }
 
     private void setComposeTextField() {
@@ -121,7 +114,7 @@ public class TweetFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setTextFieldStatus();
+                MyUtils.setEditTextLimitation(etComposeText, tvCharLeft, btnTweet);
             }
 
             @Override
@@ -129,17 +122,6 @@ public class TweetFragment extends DialogFragment {
 
             }
         });
+        MyUtils.setEditTextLimitation(etComposeText, tvCharLeft, btnTweet);
     }
-
-    private void setTextFieldStatus() {
-        int remain = MyUtils.setRemainingEditTextLength(etComposeText, tvCharLeft);
-        // Set submit button
-        if (remain <= 0 || remain == MyUtils.TWEET_MAX_LENGTH) {
-            btnTweet.setEnabled(false);
-        } else {
-            btnTweet.setEnabled(true);
-        }
-    }
-
-
 }

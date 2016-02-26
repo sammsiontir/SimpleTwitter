@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TweetDetailActivity extends AppCompatActivity
-        implements ReplyFragment.TweetReplyListener {
+public class TweetDetailActivity extends AppCompatActivity {
     public static User myself;
     private TweetDetailAdapter tweetDetailAdapter;
     private Tweet topTweet;
@@ -174,12 +173,6 @@ public class TweetDetailActivity extends AppCompatActivity
         ReplyFragment replyTweet = ReplyFragment.newInstance(id);
         // create compose tweet dialog
         replyTweet.show(fragmentManager, "reply_tweet");
-    }
-
-
-    @Override
-    public void onSubmitReply(String inputText, Long id) {
-        replyTweet(inputText, id);
     }
 
 }

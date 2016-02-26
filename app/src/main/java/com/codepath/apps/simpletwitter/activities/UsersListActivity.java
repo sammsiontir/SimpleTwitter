@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +14,10 @@ import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.fragments.FollowerListFragment;
 import com.codepath.apps.simpletwitter.fragments.FollowingListFragment;
 import com.codepath.apps.simpletwitter.fragments.UsersListFragment;
+import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 
-public class UsersListActivity extends AppCompatActivity implements UsersListFragment.UsersListOnClickListener{
+public class UsersListActivity extends TwitterBaseActivity implements UsersListFragment.UsersListOnClickListener{
     private int mode; // mode 0 is following list, 1 is follower list
     private User user;
 
@@ -102,5 +102,10 @@ public class UsersListActivity extends AppCompatActivity implements UsersListFra
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void addTweet(Tweet tweet) {
+        // do nothing in user list view
     }
 }
