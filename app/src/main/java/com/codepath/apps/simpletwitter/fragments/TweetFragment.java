@@ -123,7 +123,8 @@ public class TweetFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int remain = TWEET_MAX_LENGTH - count;
+                String input = etComposeText.getText().toString();
+                int remain = TWEET_MAX_LENGTH - input.length();
                 if (remain <= 0 || remain == TWEET_MAX_LENGTH) {
                     Log.d("DEBUG_false", Integer.toString(remain));
                     btnTweet.setEnabled(false);
