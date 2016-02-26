@@ -53,12 +53,18 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String POST_UNRETWEET_URL        = "statuses/unretweet/"; // +id + JSON
 	public static final String POST_FAVORITE_URL         = "favorites/create.json";
 	public static final String POST_UNFAVORITE_URL       = "favorites/destroy.json";
+
+    // POST relation with anoter user
+    public static final String POST_FOLLOW_URL           = "friendships/create.json";
+    public static final String POST_UNFOLLOW_URL         = "friendships/destroy.json";
+
+
 	public static final String JSON                      = ".json";
 	public static final String PARAM_COUNT = "25";
 
 
 	public TwitterClient(Context context) {
-		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+        super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
 	// Home Timeline - Get home timelime here
@@ -186,15 +192,14 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
-    public void getFollowerList(Long user_id, Long cursor, JsonHttpResponseHandler handler) {
+    public void getFollowerList(Long user_id, String cursor, JsonHttpResponseHandler handler) {
         String apiUrl = getApiUrl(GET_USER_FOLLOWERS_LIST);
         // Specify params
         RequestParams params = new RequestParams();
         params.put("user_id", user_id);
-        params.put("count", 100);
-        if(cursor > -1) {
-            params.put("cursor", cursor);
-        }
+        params.put("stringify_ids", true);
+        params.put("count", 20);
+        params.put("cursor", cursor);
         // Execute request
         getClient().get(apiUrl, params, handler);
     }
@@ -261,4 +266,24 @@ public class TwitterClient extends OAuthBaseClient {
 		// Execute request
 		getClient().post(apiUrl, params, handler);
 	}
+
+    // Post follow another user
+    public void postFollow(long id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(POST_FOLLOW_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+        // Execute request
+        getClient().post(apiUrl, params, handler);
+    }
+
+    // Post un-follow another user
+    public void postUnFollow(long id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(POST_UNFOLLOW_URL);
+        // Specify params
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+        // Execute request
+        getClient().post(apiUrl, params, handler);
+    }
 }

@@ -176,6 +176,10 @@ public class ProfileActivity extends AppCompatActivity
     @Override
     public void onClickFollower(Long userId) {
         // open follower list
+        Intent i = new Intent(this, UsersListActivity.class);
+        i.putExtra("user", user);
+        i.putExtra("mode", 1);
+        startActivity(i);
     }
 
     @Override

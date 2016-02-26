@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/twitter_blue" />
-    <corners android:radius="10dp" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_selected="true"
+        android:state_enabled="true"
+        android:drawable="@drawable/btn_friend_background_state_select" >
+    </item>
+    <item
+        android:state_selected="false"
+        android:state_enabled="true"
+        android:drawable="@drawable/btn_friend_background_state_unselect" >
+    </item>
+    <item
+        android:state_enabled="false"
+        android:drawable="@drawable/btn_friend_background_state_disable" >
+    </item>
+
+</selector>

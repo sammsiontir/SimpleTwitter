@@ -7,13 +7,13 @@
     <item
         android:id="@+id/action_tweet"
         android:icon="@drawable/ic_tweet_icon"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="Tweet"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_profile_while"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:title="Profile"
         app:showAsAction="always" />
 </menu>

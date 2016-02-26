@@ -61,7 +61,18 @@ public abstract class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.Use
 
         holder.tvUsername.setText(user.name);
         holder.tvScreenName.setText("@" + user.screen_name);
-        holder.ibAddFriend.setSelected(true);
+
+        // Set button
+        if(user.id == User.account.id) {
+            // unable the button if the user is myself
+            holder.ibAddFriend.setEnabled(false);
+            float alpha = 0;
+            holder.ibAddFriend.setAlpha(alpha);
+        }
+        else {
+            holder.ibAddFriend.setEnabled(true);
+        }
+        holder.ibAddFriend.setSelected(user.following);
         holder.ibAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

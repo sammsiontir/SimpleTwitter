@@ -75,6 +75,18 @@ public class MyUtils {
         });
     }
 
+    // Post follow another user
+    public static void postFollow(long userId) {
+        TwitterApplication.getRestClient().postFollow(userId, new JsonHttpResponseHandler());
+    }
+
+    // Post un-follow another user
+    public static void postUnFollow(long userId) {
+        TwitterApplication.getRestClient().postUnFollow(userId, new JsonHttpResponseHandler());
+    }
+
+
+
     // Calculate remaining word length
     public static int setRemainingEditTextLength(EditText editText, TextView textView) {
         String input = editText.getText().toString();

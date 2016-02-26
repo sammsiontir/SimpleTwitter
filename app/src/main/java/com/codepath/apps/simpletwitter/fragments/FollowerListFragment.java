@@ -17,15 +17,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FollowingListFragment extends UsersListFragment {
+public class FollowerListFragment extends UsersListFragment {
     private UserList userList;
 
-    public static FollowingListFragment newInstance(Long user_id) {
-        FollowingListFragment followingListFragment = new FollowingListFragment();
+    public static FollowerListFragment newInstance(Long user_id) {
+        FollowerListFragment followerListFragment = new FollowerListFragment();
         Bundle args = new Bundle();
         args.putLong("user_id", user_id);
-        followingListFragment.setArguments(args);
-        return followingListFragment;
+        followerListFragment.setArguments(args);
+        return followerListFragment;
     }
 
     @Override
@@ -48,11 +48,12 @@ public class FollowingListFragment extends UsersListFragment {
         current_user_id = getArguments().getLong("user_id");
         // Get Home timeline
         userList = null;
+        // Get user list
         onScrollingDown();
     }
 
     void loadMoreUsers(String next_cursor_str) {
-        TwitterApplication.getRestClient().getFriendList(current_user_id, next_cursor_str, new JsonHttpResponseHandler() {
+        TwitterApplication.getRestClient().getFollowerList(current_user_id, next_cursor_str, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Gson gson = new Gson();
