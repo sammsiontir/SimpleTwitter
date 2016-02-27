@@ -20,7 +20,7 @@ import com.codepath.apps.simpletwitter.models.User;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TimelineActivityTwitter extends TwitterBaseActivity
+public class TimelineActivity extends TwitterBaseActivity
         implements TweetsListFragment.TweetsListOnClickListener  {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -42,6 +42,8 @@ public class TimelineActivityTwitter extends TwitterBaseActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
 
+        // Get Current User account
+        if(User.account == null) MyUtils.getMyAccount();
 
         // Bind vpHMPager & tabsHM
         tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
@@ -70,9 +72,6 @@ public class TimelineActivityTwitter extends TwitterBaseActivity
                 tweetsPagerAdapter.scrollToPosition(vpHMPager, 0);
             }
         });
-
-        // Get Current User account
-        if(User.account == null) MyUtils.getMyAccount();
     }
 
     @Override

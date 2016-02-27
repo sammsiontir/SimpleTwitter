@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/twitter_light_gray"
+    android:background="@color/twitter_white"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -31,10 +31,22 @@
             android:layout_height="wrap_content"
             android:text="\@username"
             android:id="@+id/tvScreenName"
-            android:textColor="@color/twitter_black"
+            android:textColor="@color/twitter_gray"
             android:layout_below="@+id/tvUsername"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:id="@+id/ibAddFriend"
+            android:src="@drawable/btn_friend_src_selector"
+            android:background="@drawable/btn_friend_background"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/count_margin"
+            android:layout_marginEnd="@dimen/count_margin" />
     </RelativeLayout>
 
     <RelativeLayout

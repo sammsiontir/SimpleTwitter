@@ -84,7 +84,16 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
             }
         });
         // Bind Retweet button
-        holder.ibRetweet.setEnabled(true);
+        if(User.account != null && tweet.user.id == User.account.id) {
+            holder.ibRetweet.setEnabled(false);
+            holder.ibRetweet.setAlpha((float) 0.5);
+            holder.tvRetweetCount.setEnabled(false);
+            holder.tvRetweetCount.setAlpha((float) 0.0);
+        }
+        else {
+            holder.ibRetweet.setEnabled(true);
+            holder.tvRetweetCount.setEnabled(true);
+        }
         holder.ibRetweet.setSelected(tweet.retweeted);
         holder.tvRetweetCount.setSelected(tweet.retweeted);
         holder.tvRetweetCount.setText(Integer.toString(tweet.retweet_count));

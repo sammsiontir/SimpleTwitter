@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.models.User;
 
@@ -21,6 +23,7 @@ public class ProfileFragment extends Fragment {
 
     @Bind(R.id.tvUsername) TextView tvUsername;
     @Bind(R.id.tvScreenName) TextView tvScreenName;
+    @Bind(R.id.ibAddFriend) ImageButton ibAddFriend;
     @Bind(R.id.tvFollowingCount) TextView tvFollowingCount;
     @Bind(R.id.tvLabelFollowing) TextView tvLabelFollowing;
     @Bind(R.id.tvFollowersCount) TextView tvFollowersCount;
@@ -90,6 +93,31 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.onClickFollower(user.id);
+            }
+        });
+        if(user.id == User.account.id) {
+            // unable the button if the user is myself
+            ibAddFriend.setEnabled(false);
+            float alpha = 0;
+            ibAddFriend.setAlpha(alpha);
+        }
+        else {
+            ibAddFriend.setEnabled(true);
+        }
+        ibAddFriend.setSelected(user.following);
+        ibAddFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ibAddFriend.isSelected()) {
+                    // we are friend before click, so unfriend
+                    MyUtils.postUnFollow(user.id);
+                    ibAddFriend.setSelected(false);
+                }
+                else {
+                    // we are not friend before click, so friend
+                    MyUtils.postFollow(user.id);
+                    ibAddFriend.setSelected(true);
+                }
             }
         });
 

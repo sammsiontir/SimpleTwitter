@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         // Bind view with toolbar and floating button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +158,7 @@ public class TweetDetailActivity extends AppCompatActivity {
                 // notify change on the last item
                 tweetDetailAdapter.notifyItemInserted(tweetDetailAdapter.getItemCount());
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
@@ -173,6 +177,30 @@ public class TweetDetailActivity extends AppCompatActivity {
         ReplyFragment replyTweet = ReplyFragment.newInstance(id);
         // create compose tweet dialog
         replyTweet.show(fragmentManager, "reply_tweet");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_tweet:
+                MyUtils.openReplyDialog(this, topTweet.id);
+                return true;
+
+            case R.id.action_profile:
+                MyUtils.openProfileActivity(this, User.account);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

@@ -15,7 +15,13 @@
         android:fillViewport="false"
         android:id="@+id/tabsProfile"
         app:pstsShouldExpand="true"
-        app:pstsTextAllCaps="false"
+        app:pstsTextAllCaps="true"
+        android:textColor="@color/twitter_blue"
+        app:pstsDividerColor="@color/twitter_gray"
+        app:pstsUnderlineHeight="5dp"
+        app:pstsUnderlineColor="@color/twitter_light_gray"
+        app:pstsIndicatorHeight="10dp"
+        app:pstsIndicatorColor="@color/twitter_blue"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

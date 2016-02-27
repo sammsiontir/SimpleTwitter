@@ -40,8 +40,6 @@ public class UsersListActivity extends TwitterBaseActivity implements UsersListF
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         // Get user information from previous activity
         mode = getIntent().getIntExtra("mode", 0);
         user = getIntent().getParcelableExtra("user");

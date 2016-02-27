@@ -6,5 +6,4 @@
     <stroke
         android:width="3px"
         android:color="@color/twitter_light_gray" />
-
 </shape>

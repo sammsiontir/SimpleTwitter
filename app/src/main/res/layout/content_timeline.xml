@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/twitter_light_gray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.TimelineActivityTwitter"
+    tools:context=".activities.TimelineActivity"
     tools:showIn="@layout/activity_timeline" >
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -24,6 +24,7 @@
                 android:layout_height="48dp"
                 android:fillViewport="false"
                 android:id="@+id/tabsHM"
+                android:textColor="@color/twitter_blue"
                 app:pstsDividerColor="@color/twitter_gray"
                 app:pstsUnderlineHeight="5dp"
                 app:pstsUnderlineColor="@color/twitter_light_gray"
