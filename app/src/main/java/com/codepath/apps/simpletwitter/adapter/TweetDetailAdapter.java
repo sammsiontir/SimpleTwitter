@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
+import com.codepath.apps.simpletwitter.listeners.BtnFavoriteOnClickListener;
+import com.codepath.apps.simpletwitter.listeners.BtnRetweetOnClickListener;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.ViewHolderTweet;
 

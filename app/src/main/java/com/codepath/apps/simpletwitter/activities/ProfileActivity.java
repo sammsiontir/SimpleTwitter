@@ -40,6 +40,7 @@ public class ProfileActivity extends TwitterBaseActivity
     @Bind(R.id.tabsProfile) PagerSlidingTabStrip tabsProfile;
     @Bind(R.id.vpProfilePager) ViewPager vpProfilePager;
     @Bind(R.id.ivProfileBanner) ImageView ivProfileBanner;
+    @Bind(R.id.ivProfilePicture) ImageView ivProfilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,17 @@ public class ProfileActivity extends TwitterBaseActivity
         // Bind profile background image
         getProfileBannerUrl(user.id, this);
 //        bannerUrlTemp = "https://pbs.twimg.com/profile_banners/215318899/1456062009/mobile";
+
+        Glide.with(this)
+                .load(user.profile_image_url)
+                .fitCenter()
+                .into(ivProfilePicture);
+        ivProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -121,8 +133,7 @@ public class ProfileActivity extends TwitterBaseActivity
         startActivity(i);
     }
 
-    @Override
-    public void onClickProfilePicture(Long userId) {
+    public void onClickProfilePicture() {
         // open profile picture
     }
 

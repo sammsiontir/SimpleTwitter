@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitter.adapter;
+package com.codepath.apps.simpletwitter.listeners;
 
 import android.util.Log;
 import android.view.View;

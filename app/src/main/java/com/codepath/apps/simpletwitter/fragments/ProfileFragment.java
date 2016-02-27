@@ -7,10 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.models.User;
 
@@ -21,16 +19,16 @@ public class ProfileFragment extends Fragment {
     private User user;
     private ProfileOnClickListener listener;
 
-    @Bind(R.id.ivProfilePicture) ImageView ivProfilePicture;
     @Bind(R.id.tvUsername) TextView tvUsername;
     @Bind(R.id.tvScreenName) TextView tvScreenName;
     @Bind(R.id.tvFollowingCount) TextView tvFollowingCount;
+    @Bind(R.id.tvLabelFollowing) TextView tvLabelFollowing;
     @Bind(R.id.tvFollowersCount) TextView tvFollowersCount;
+    @Bind(R.id.tvLabelFollowers) TextView tvLabelFollowers;
 
     public interface ProfileOnClickListener {
         void onClickFollowing(Long userId);
         void onClickFollower(Long userId);
-        void onClickProfilePicture(Long userId);
     }
 
     @Override
@@ -64,29 +62,31 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
         // set content of view fields
-        Glide.with(view.getContext())
-                .load(user.profile_image_url)
-                .fitCenter()
-                .into(ivProfilePicture);
         tvUsername.setText(user.name);
         tvScreenName.setText(user.screen_name);
         tvFollowingCount.setText(Integer.toString(user.friends_count));
         tvFollowersCount.setText(Integer.toString(user.followers_count));
 
         // set onClickListener to clickable item
-        ivProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickProfilePicture(user.id);
-            }
-        });
         tvFollowingCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickFollowing(user.id);
             }
         });
+        tvLabelFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickFollowing(user.id);
+            }
+        });
         tvFollowersCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickFollower(user.id);
+            }
+        });
+        tvLabelFollowers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickFollower(user.id);

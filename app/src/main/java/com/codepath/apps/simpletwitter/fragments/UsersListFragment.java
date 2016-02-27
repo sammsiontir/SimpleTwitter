@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.apps.simpletwitter.R;
-import com.codepath.apps.simpletwitter.adapter.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.simpletwitter.listeners.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.UsersAdapter;
 import com.codepath.apps.simpletwitter.models.User;
 

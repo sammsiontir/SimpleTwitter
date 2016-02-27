@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/twitter_light_gray"
     android:layout_width="match_parent" android:layout_height="wrap_content">
-
-    <ImageView
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:paddingBottom="@dimen/view_vertical_margin"
-        android:paddingLeft="@dimen/view_horizontal_margin"
-        android:paddingRight="@dimen/view_horizontal_margin"
-        android:paddingTop="@dimen/view_vertical_margin"
-        android:id="@+id/ivProfilePicture"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +10,6 @@
         android:paddingLeft="@dimen/view_horizontal_margin"
         android:paddingRight="@dimen/view_horizontal_margin"
         android:paddingTop="@dimen/view_vertical_margin"
-        android:layout_below="@+id/ivProfilePicture"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/relativeLayout">

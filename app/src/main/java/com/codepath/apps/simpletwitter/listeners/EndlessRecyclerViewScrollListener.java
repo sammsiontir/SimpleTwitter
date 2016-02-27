@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitter.adapter;
+package com.codepath.apps.simpletwitter.listeners;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
