@@ -141,7 +141,7 @@ public class MyUtils {
         int remain = TWEET_MAX_LENGTH - input.length();
         textView.setText(Integer.toString(remain));
         // Set submit button
-        if (remain <= 0 || remain == MyUtils.TWEET_MAX_LENGTH) {
+        if (remain <= 0 || remain >= TWEET_MAX_LENGTH) {
             button.setEnabled(false);
         } else {
             button.setEnabled(true);

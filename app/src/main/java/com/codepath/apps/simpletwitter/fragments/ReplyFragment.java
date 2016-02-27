@@ -87,7 +87,6 @@ public class ReplyFragment extends DialogFragment {
         setComposeTextField();
 
         // Bind Tweet button
-        btnTweet.setEnabled(false);
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

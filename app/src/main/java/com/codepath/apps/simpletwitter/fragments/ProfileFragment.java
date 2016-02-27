@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
         // set content of view fields
         tvUsername.setText(user.name);
-        tvScreenName.setText(user.screen_name);
+        tvScreenName.setText("@" + user.screen_name);
         tvFollowingCount.setText(Integer.toString(user.friends_count));
         tvFollowersCount.setText(Integer.toString(user.followers_count));
 
