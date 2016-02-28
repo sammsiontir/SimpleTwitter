@@ -54,7 +54,7 @@ public class ProfileActivity extends TwitterBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplication(), MessageActivity.class);
+                Intent i = new Intent(getApplication(), RecipientsListActivity.class);
                 startActivity(i);
                 Snackbar.make(view, "Message", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

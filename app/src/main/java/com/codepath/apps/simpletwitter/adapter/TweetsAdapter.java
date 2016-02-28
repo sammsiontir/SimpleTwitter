@@ -116,5 +116,4 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
     public abstract void onClickReply(Long tweetId);
     public abstract void onClickText(Long tweetId);
     public abstract void onClickUser(User user);
-
 }

@@ -74,7 +74,7 @@
                 android:value="com.codepath.apps.simpletwitter.activities.ProfileActivity" />
         </activity>
         <activity
-            android:name=".activities.MessageActivity"
+            android:name=".activities.RecipientsListActivity"
             android:label="@string/title_activity_message"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
