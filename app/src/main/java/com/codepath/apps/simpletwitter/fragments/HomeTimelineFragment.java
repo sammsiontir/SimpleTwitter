@@ -27,7 +27,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
         List<Long> queryResults = TweetDB.getRecentTweets(100);
         if(queryResults != null && !queryResults.isEmpty()) {
             tweetsIdArray.addAll(queryResults);
-            tweetsAdapter.notifyDataSetChanged();
             Toast.makeText(getActivity(), "Load from DB", Toast.LENGTH_LONG).show();
         }
         else {
@@ -94,7 +93,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
         long max_id = 0;
         long since_id = 0;
         if (tweetsAdapter != null && tweetsAdapter.getItemCount() > 0) {
-            max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 1);
+            max_id = tweetsAdapter.getTweets().get(tweetsAdapter.getItemCount() - 2);
         }
         TwitterApplication.getRestClient().getHomeTimeline(max_id, since_id, new JsonHttpResponseHandler() {
             @Override

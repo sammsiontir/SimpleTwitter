@@ -2,6 +2,7 @@ package com.codepath.apps.simpletwitter.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.apps.simpletwitter.R;
-import com.codepath.apps.simpletwitter.listeners.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletwitter.adapter.TweetsAdapter;
 import com.codepath.apps.simpletwitter.models.User;
 
@@ -24,6 +24,7 @@ public abstract class TweetsListFragment extends Fragment {
     protected TweetsAdapter tweetsAdapter;
     protected ArrayList<Long> tweetsIdArray;
     protected TweetsListOnClickListener listener;
+    protected Handler handler;
 
     @Bind(R.id.rvList) RecyclerView rvTimeline;
 
@@ -58,24 +59,8 @@ public abstract class TweetsListFragment extends Fragment {
         // Setup adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // Bind Recycle view with tweets
-        rvTimeline.setAdapter(tweetsAdapter);
         rvTimeline.setLayoutManager(linearLayoutManager);
-        rvTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                onScrollingDown();
-            }
-        });
-
-        return view;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Initial data and adapter
-        tweetsIdArray = new ArrayList<>();
-        tweetsAdapter = new TweetsAdapter(tweetsIdArray) {
+        tweetsAdapter = new TweetsAdapter(tweetsIdArray, rvTimeline) {
             @Override
             public void onClickReply(Long tweetId) {
                 listener.onClickReply(tweetId);
@@ -90,6 +75,40 @@ public abstract class TweetsListFragment extends Fragment {
             }
 
         };
+
+        rvTimeline.setAdapter(tweetsAdapter);
+        tweetsAdapter.setOnLoadMoreListener(new TweetsAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                //add progress item
+                int progress_position = tweetsIdArray.size();
+                tweetsIdArray.add(null);
+                tweetsAdapter.notifyItemInserted(progress_position);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //remove progress item
+                        tweetsIdArray.remove(tweetsIdArray.size() - 1);
+                        tweetsAdapter.notifyItemRemoved(tweetsIdArray.size());
+                        //add items one by one
+                        onScrollingDown();
+                        tweetsAdapter.setLoaded();
+                        //or you can add all at once but do not forget to call mAdapter.notifyDataSetChanged();
+                    }
+                }, 2000);
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Initial data and adapter
+        tweetsIdArray = new ArrayList<>();
+        handler = new Handler();
     }
 
     @Override

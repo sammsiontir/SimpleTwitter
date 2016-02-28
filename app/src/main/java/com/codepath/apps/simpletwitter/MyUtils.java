@@ -1,6 +1,9 @@
 package com.codepath.apps.simpletwitter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
@@ -31,6 +34,13 @@ import java.util.Locale;
 
 public class MyUtils {
     public static final int TWEET_MAX_LENGTH = 140;
+
+    public static Boolean isNetworkAvailable(Context context) {
+        ConnectivityManager cm =(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if(activeNetwork==null) return false;
+        else return activeNetwork.isConnectedOrConnecting();
+    }
 
     public static void openProfileActivity(AppCompatActivity activity, User user) {
         Intent profileIntent = new Intent(activity, ProfileActivity.class);
@@ -74,7 +84,6 @@ public class MyUtils {
                 Gson gson = new Gson();
                 Tweet tweet = gson.fromJson(response.toString(), Tweet.class);
                 Log.d("DEBUG", response.toString());
-
                 activity.addTweet(tweet);
             }
 
@@ -124,7 +133,7 @@ public class MyUtils {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
                 throwable.printStackTrace();
-                Log.e("REST_API_ERROR", errorResponse.toString());
+                if(errorResponse!=null) Log.d("REST_API_ERROR", errorResponse.toString());
             }
         });
     }

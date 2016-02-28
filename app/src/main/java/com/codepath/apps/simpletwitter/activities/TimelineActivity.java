@@ -2,6 +2,7 @@ package com.codepath.apps.simpletwitter.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -53,7 +54,15 @@ public class TimelineActivity extends TwitterBaseActivity
         srTimeline.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                tweetsPagerAdapter.onPullToRefresh(vpHMPager);
+                // check internet connection
+                if(MyUtils.isNetworkAvailable(getApplicationContext())) {
+                    tweetsPagerAdapter.onPullToRefresh(vpHMPager);
+                    //Snackbar.make(getCurrentFocus(), "Loading", Snackbar.LENGTH_LONG).show();
+                }
+                else {
+                    srTimeline.setRefreshing(false);
+                    Snackbar.make(getCurrentFocus(), "Connection lost", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
         // Configure the refreshing colors

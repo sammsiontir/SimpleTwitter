@@ -1,9 +1,11 @@
 package com.codepath.apps.simpletwitter.adapter;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletwitter.MyUtils;
@@ -16,27 +18,82 @@ import com.codepath.apps.simpletwitter.models.ViewHolderTweet;
 
 import java.util.List;
 
-public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet> {
+public abstract class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public List<Long> tweets;
     View convertView;
 
-    public TweetsAdapter(List<Long> tweets) {
+    private final int VIEW_ITEM = 1;
+    private final int VIEW_PROG = 0;
+
+
+    // The minimum amount of items to have below your current scroll position before loading more.
+    private int visibleThreshold = 2;
+    private int lastVisibleItem, totalItemCount;
+    private boolean loading;
+    private OnLoadMoreListener onLoadMoreListener;
+
+    public TweetsAdapter(List<Long> tweets, RecyclerView recyclerView) {
         this.tweets = tweets;
+
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                    if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        // End has been reached
+                        // Do something
+                        if (onLoadMoreListener != null) {
+                            onLoadMoreListener.onLoadMore();
+                        }
+                        loading = true;
+                    }
+                }
+            });
+        }
     }
+
     public List<Long> getTweets() {
         return tweets;
     }
 
     @Override
-    public ViewHolderTweet onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        convertView = inflater.inflate(R.layout.item_tweet, parent, false);
-        ViewHolderTweet viewHolder = new ViewHolderTweet(convertView);
-        return viewHolder;
+    public int getItemViewType(int position) {
+        return tweets.get(position) != null ? VIEW_ITEM : VIEW_PROG;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderTweet holder, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder holder;
+        if (viewType == VIEW_ITEM) {
+            convertView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_tweet, parent, false);
+
+            holder = new ViewHolderTweet(convertView);
+        } else {
+            convertView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_progress, parent, false);
+
+            holder = new ProgressViewHolder(convertView);
+        }
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ViewHolderTweet) {
+            onBindTweet((ViewHolderTweet) holder, position);
+        } else {
+            ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+        }
+    }
+
+    private void onBindTweet(ViewHolderTweet holder, int position) {
         // Get data from current position
         final Long tweetId = tweets.get(position);
         Tweet tweet = Tweet.hashTweets.get(tweetId);
@@ -106,7 +163,6 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
         holder.ibFavorite.setOnClickListener(new BtnFavoriteOnClickListener(tweetId, holder));
     }
 
-
     @Override
     public int getItemCount() {
         return tweets.size();
@@ -116,4 +172,26 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<ViewHolderTweet
     public abstract void onClickReply(Long tweetId);
     public abstract void onClickText(Long tweetId);
     public abstract void onClickUser(User user);
+
+
+    public void setLoaded() {
+        loading = false;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
+    }
+
+    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+
+        public ProgressViewHolder(View v) {
+            super(v);
+            progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        }
+    }
 }

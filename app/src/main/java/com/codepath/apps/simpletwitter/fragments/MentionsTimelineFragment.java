@@ -3,7 +3,6 @@ package com.codepath.apps.simpletwitter.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.models.Tweet;
@@ -27,7 +26,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     @Override
     public void onScrollingDown() {
         loadPreviousTweets();
-        Toast.makeText(getActivity(), "Load More", Toast.LENGTH_LONG).show();
     }
 
     @Override
