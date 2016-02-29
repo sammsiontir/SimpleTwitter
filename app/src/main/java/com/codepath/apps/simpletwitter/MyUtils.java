@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.codepath.apps.simpletwitter.RESTAPI.TwitterApplication;
 import com.codepath.apps.simpletwitter.activities.ProfileActivity;
 import com.codepath.apps.simpletwitter.activities.RecipientsListActivity;
+import com.codepath.apps.simpletwitter.activities.SearchActivity;
 import com.codepath.apps.simpletwitter.activities.TweetDetailActivity;
 import com.codepath.apps.simpletwitter.activities.TwitterBaseActivity;
 import com.codepath.apps.simpletwitter.fragments.ReplyFragment;
@@ -43,14 +44,19 @@ public class MyUtils {
     }
 
     public static void openProfileActivity(AppCompatActivity activity, User user) {
-        Intent profileIntent = new Intent(activity, ProfileActivity.class);
-        profileIntent.putExtra("user", user);
-        activity.startActivity(profileIntent);
+        Intent intent = new Intent(activity, ProfileActivity.class);
+        intent.putExtra("user", user);
+        activity.startActivity(intent);
     }
 
     public static void openRecipientsActivity(AppCompatActivity activity) {
-        Intent recipientIntent = new Intent(activity, RecipientsListActivity.class);
-        activity.startActivity(recipientIntent);
+        Intent intent = new Intent(activity, RecipientsListActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void openSearchActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, SearchActivity.class);
+        activity.startActivity(intent);
     }
 
     public static void openTweetDetailActivity(AppCompatActivity activity, Long tweetId) {

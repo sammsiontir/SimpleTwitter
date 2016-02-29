@@ -7,21 +7,27 @@
     <item
         android:id="@+id/action_tweet"
         android:icon="@drawable/ic_tweet_icon"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
         android:title="Tweet"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_profile_while"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         android:title="Profile"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_message"
         android:icon="@android:drawable/ic_dialog_email"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="Profile"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search" />
 
 </menu>

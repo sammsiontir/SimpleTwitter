@@ -35,6 +35,10 @@ public abstract class TwitterBaseActivity extends AppCompatActivity {
                 MyUtils.openRecipientsActivity(this);
                 return true;
 
+            case R.id.action_search:
+                MyUtils.openSearchActivity(this);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

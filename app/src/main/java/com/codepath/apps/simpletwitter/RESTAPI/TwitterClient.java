@@ -279,6 +279,20 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    public void getTweetSearch(String query, long max_id, long since_id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl(GET_TWEET_SEARCH);
+        RequestParams params = new RequestParams();
+        params.put("q", query);
+        params.put("count", 100);
+        if(max_id > 0) {
+            params.put("max_id", Long.toString(max_id));
+        }
+        if(since_id > 0) {
+            params.put("since_id", Long.toString(since_id));
+        }
+        getClient().get(apiUrl, params, handler);
+    }
+
     /***********************************************************************************************
      * Directed messages
      **********************************************************************************************/
