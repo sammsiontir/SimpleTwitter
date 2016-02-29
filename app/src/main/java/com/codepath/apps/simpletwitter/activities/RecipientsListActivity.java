@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletwitter.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -55,6 +56,14 @@ public class RecipientsListActivity extends TwitterBaseActivity {
         recipients = new ArrayList<>();
         recipientsAdapter = new RecipientsAdapter(this, recipients);
         lvRecipient.setAdapter(recipientsAdapter);
+        recipientsAdapter.setOnClickRecipientListener(new RecipientsAdapter.onClickRecipientListener() {
+            @Override
+            public void onClickRecipient(Long recipientId, int position) {
+                Intent i = new Intent(getApplicationContext(), MessageActivity.class);
+                i.putExtra("recipient", recipients.get(position));
+                startActivity(i);
+            }
+        });
 
         // Fetch recipients
         loadLatestRecipients();

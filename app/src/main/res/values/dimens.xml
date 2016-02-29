@@ -9,5 +9,6 @@
     <dimen name="tweet_button_size">20dp</dimen>
     <dimen name="tweet_button_size_smaller">18dp</dimen>
     <dimen name="count_margin">5dp</dimen>
+    <dimen name="message_margin">15dp</dimen>
 
 </resources>

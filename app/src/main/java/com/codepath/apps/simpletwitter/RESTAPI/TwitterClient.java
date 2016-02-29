@@ -311,7 +311,7 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("user_id", user_id);
         params.put("text", text);
-        getClient().get(apiUrl, params, handler);
+        getClient().post(apiUrl, params, handler);
     }
 
 
