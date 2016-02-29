@@ -61,6 +61,7 @@ Here's a walkthrough of implemented user stories:
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/profile.gif' title='Profile' width='' alt='Video Walkthrough' />
 
 *Go to anyone's profile*
+
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/other_users.gif' title='Profile' width='' alt='Video Walkthrough' />
 
 *Search*
@@ -76,6 +77,7 @@ Here's a walkthrough of implemented user stories:
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/tweet_favorite.gif' title='Search' width='' alt='Video Walkthrough' />
 
 *connection lost*
+
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/connection_lost.gif' title='Search' width='' alt='Video Walkthrough' />
 
 
