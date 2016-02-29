@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.codepath.apps.simpletwitter.helpers.MyUtils;
+import com.codepath.apps.simpletwitter.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.adapter.TweetsPagerAdapter;
 import com.codepath.apps.simpletwitter.fragments.TweetsListFragment;
