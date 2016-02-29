@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.drawable.ic_twitter_logo_white);
-        getSupportActionBar().setTitle("Search tweets");
+        getSupportActionBar().setTitle("    Search tweets");
 
         // Bind view
         ButterKnife.bind(this);
