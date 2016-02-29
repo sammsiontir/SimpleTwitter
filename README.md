@@ -40,10 +40,12 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [x] Return to the top tweet by a click
+* [x] Return to the top tweet by clicking floating btn
+  * [x] botton appear/disappear when scrolling 
 * [x] collapse profile information when scrolling up
-* [x] Follow and un-follow another user
-* [x] Tweet/Retweet a post
+* [x] Buttons change to diplay their status when click or writing
+  * [x] Retweet btn, following btn, compose/reply btn
+* [x] User can Follow and un-follow another user
 * [x] In detail view, user can find replied tweets for the specific tweet. 
 
 ## Video Walkthrough 
@@ -58,6 +60,9 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/profile.gif' title='Profile' width='' alt='Video Walkthrough' />
 
+*Go to anyone's profile*
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/other_users.gif' title='Profile' width='' alt='Video Walkthrough' />
+
 *Search*
 
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/search.gif' title='Search' width='' alt='Video Walkthrough' />
@@ -69,6 +74,10 @@ Here's a walkthrough of implemented user stories:
 *retweet, favorite, reply*
 
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/tweet_favorite.gif' title='Search' width='' alt='Video Walkthrough' />
+
+*connection lost*
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/connection_lost.gif' title='Search' width='' alt='Video Walkthrough' />
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
