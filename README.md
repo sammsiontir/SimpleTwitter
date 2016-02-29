@@ -80,6 +80,10 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/connection_lost.gif' title='Search' width='' alt='Video Walkthrough' />
 
+*tweet in detail*
+
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/detail_view.gif' title='Search' width='' alt='Video Walkthrough' />
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
