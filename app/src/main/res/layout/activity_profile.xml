@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/twitter_blue"
+            app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <RelativeLayout
@@ -68,9 +69,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/twitter_blue"
+        app:layout_anchor="@id/ivProfileBanner"
+        app:layout_anchorGravity="bottom|right|end"
         android:src="@drawable/ic_tweet_icon" />
 
 </android.support.design.widget.CoordinatorLayout>

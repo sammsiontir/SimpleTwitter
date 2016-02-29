@@ -36,17 +36,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:id="@+id/ibAddFriend"
-            android:src="@drawable/btn_friend_src_selector"
-            android:background="@drawable/btn_friend_background"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="@dimen/count_margin"
-            android:layout_marginEnd="@dimen/count_margin" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -66,7 +55,7 @@
             android:text="8296"
             android:id="@+id/tvFollowingCount"
             android:textColor="@color/twitter_black"
-            android:layout_alignTop="@+id/textView"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -126,6 +115,18 @@
             android:layout_toRightOf="@+id/tvFollowersCount"
             android:layout_toEndOf="@+id/tvFollowersCount"
             android:id="@+id/textView3" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:id="@+id/ibAddFriend"
+            android:src="@drawable/btn_friend_src_selector"
+            android:background="@drawable/btn_friend_background"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/count_margin"
+            android:layout_marginEnd="@dimen/count_margin" />
 
     </RelativeLayout>
 

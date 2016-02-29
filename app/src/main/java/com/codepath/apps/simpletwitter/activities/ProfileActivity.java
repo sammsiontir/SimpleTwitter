@@ -3,12 +3,13 @@ package com.codepath.apps.simpletwitter.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -42,6 +43,10 @@ public class ProfileActivity extends TwitterBaseActivity
     @Bind(R.id.ivProfileBanner) ImageView ivProfileBanner;
     @Bind(R.id.ivProfilePicture) ImageView ivProfilePicture;
 
+    void openComposeDialog() {
+        MyUtils.openComposeDialog(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +59,7 @@ public class ProfileActivity extends TwitterBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplication(), RecipientsListActivity.class);
-                startActivity(i);
-                Snackbar.make(view, "Message", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                openComposeDialog();
             }
         });
         // Get user information from previous activity
@@ -155,6 +157,7 @@ public class ProfileActivity extends TwitterBaseActivity
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable
                     , JSONObject errorResponse) {
@@ -171,4 +174,29 @@ public class ProfileActivity extends TwitterBaseActivity
         // updateToDB timeline
         profilePagerAdapter.add(vpProfilePager, 0, tweet.id);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_profile:
+                MyUtils.openProfileActivity(this, User.account);
+                return true;
+
+            case R.id.action_message:
+                MyUtils.openRecipientsActivity(this);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
