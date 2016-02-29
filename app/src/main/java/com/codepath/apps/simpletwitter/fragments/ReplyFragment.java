@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.simpletwitter.MyUtils;
+import com.codepath.apps.simpletwitter.helpers.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.activities.TwitterBaseActivity;
 import com.codepath.apps.simpletwitter.models.Tweet;

@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.codepath.apps.simpletwitter.MyUtils;
+import com.codepath.apps.simpletwitter.helpers.MyUtils;
 import com.codepath.apps.simpletwitter.R;
 import com.codepath.apps.simpletwitter.fragments.FollowerListFragment;
 import com.codepath.apps.simpletwitter.fragments.FollowingListFragment;

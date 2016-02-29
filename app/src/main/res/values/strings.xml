@@ -10,5 +10,6 @@
     <string name="title_activity_users_list">UsersListActivity</string>
     <string name="title_activity_message">MessageActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>
