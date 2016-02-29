@@ -50,18 +50,25 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+*Mention and Home timeline*
+
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/mention_home_timeline.gif' title='Mention and Home' width='' alt='Video Walkthrough' />
+
+*Profile*
+
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/profile.gif' title='Profile' width='' alt='Video Walkthrough' />
+
+*Search*
+
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/search.gif' title='Search' width='' alt='Video Walkthrough' />
+
+*Message*
+
+<img src='https://github.com/sammsiontir/SimpleTwitter/blob/master/message.gif' title='Search' width='' alt='Video Walkthrough' />
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-## Notes
-
-Describe any challenges encountered while building the app.
-
-## Open-source libraries used
-
-- [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
-- [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
 
 ## License
 
