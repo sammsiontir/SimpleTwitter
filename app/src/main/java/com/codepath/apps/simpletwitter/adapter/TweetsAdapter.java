@@ -15,6 +15,7 @@ import com.codepath.apps.simpletwitter.listeners.BtnRetweetOnClickListener;
 import com.codepath.apps.simpletwitter.models.Tweet;
 import com.codepath.apps.simpletwitter.models.User;
 import com.codepath.apps.simpletwitter.models.ViewHolderTweet;
+import com.codepath.apps.simpletwitter.models.ViewHolderTweetMedia;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public List<Long> tweets;
     View convertView;
 
-    private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
-
+    private final int VIEW_ITEM_TEXT = 1;
+    private final int VIEW_ITEM_MEDIA = 2;
 
     // The minimum amount of items to have below your current scroll position before loading more.
     private int visibleThreshold = 2;
@@ -64,36 +65,65 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemViewType(int position) {
-        return tweets.get(position) != null ? VIEW_ITEM : VIEW_PROG;
+        if(tweets.get(position) == null) return VIEW_PROG;
+        if(Tweet.hashTweets.get(tweets.get(position)).entities != null &&
+                Tweet.hashTweets.get(tweets.get(position)).entities.media != null &&
+                Tweet.hashTweets.get(tweets.get(position)).entities.media.get(0) != null)
+            return VIEW_ITEM_MEDIA;
+        return VIEW_ITEM_TEXT;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder;
-        if (viewType == VIEW_ITEM) {
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_tweet, parent, false);
+        switch(viewType) {
+            case VIEW_PROG:
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_progress, parent, false);
 
-            holder = new ViewHolderTweet(convertView);
-        } else {
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_progress, parent, false);
+                holder = new ProgressViewHolder(convertView);
+                return holder;
+            case VIEW_ITEM_TEXT:
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_tweet, parent, false);
 
-            holder = new ProgressViewHolder(convertView);
+                holder = new ViewHolderTweet(convertView);
+                return holder;
+            case VIEW_ITEM_MEDIA:
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_tweet_media, parent, false);
+
+                holder = new ViewHolderTweetMedia(convertView);
+                return holder;
+            default:
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_tweet, parent, false);
+
+                holder = new ViewHolderTweet(convertView);
+                return holder;
         }
-        return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ViewHolderTweet) {
-            onBindTweet((ViewHolderTweet) holder, position);
-        } else {
-            ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+        int viewType = getItemViewType(position);
+        switch(viewType) {
+            case VIEW_PROG:
+                ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+                break;
+            case VIEW_ITEM_TEXT:
+                onBindTextTweet((ViewHolderTweet) holder, position);
+                break;
+            case VIEW_ITEM_MEDIA:
+                onBindMedia((ViewHolderTweetMedia) holder, position);
+                break;
+            default:
+                onBindTextTweet((ViewHolderTweet) holder, position);
+                break;
         }
     }
 
-    private void onBindTweet(ViewHolderTweet holder, int position) {
+    private void onBindTextTweet(ViewHolderTweet holder, int position) {
         // Get data from current position
         final Long tweetId = tweets.get(position);
         Tweet tweet = Tweet.hashTweets.get(tweetId);
@@ -161,6 +191,20 @@ public abstract class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.tvFavoriteCount.setSelected(tweet.favorited);
         holder.tvFavoriteCount.setText(Integer.toString(tweet.favorite_count));
         holder.ibFavorite.setOnClickListener(new BtnFavoriteOnClickListener(tweetId, holder));
+    }
+
+    private void onBindMedia(ViewHolderTweetMedia holder, int position) {
+        // Bind other stuff
+        onBindTextTweet(holder, position);
+
+        // bind image
+        final Long tweetId = tweets.get(position);
+        Tweet tweet = Tweet.hashTweets.get(tweetId);
+
+        Glide.with(convertView.getContext())
+                .load(tweet.entities.media.get(0).media_url)
+                .fitCenter()
+                .into(holder.ivTweetImage);
     }
 
     @Override

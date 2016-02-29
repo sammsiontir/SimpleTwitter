@@ -26,7 +26,7 @@ public class Tweet {
     public Tweet retweeted_status;
 
     // Entity - enhance feature
-    Entity entities;
+    public Entity entities;
 
     // Update Database
     public void updateToDB() {

@@ -7,9 +7,9 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class Entity implements Parcelable {
-    ArrayList<Hashtag> hashtags;
-    ArrayList<Media> media;
-    ArrayList<UserMention> user_mentions;
+    public ArrayList<Hashtag> hashtags;
+    public ArrayList<Media> media;
+    public ArrayList<UserMention> user_mentions;
 
     @Override
     public int describeContents() {

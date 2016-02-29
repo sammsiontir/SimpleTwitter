@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Media implements Parcelable {
-    String display_url;
-    Long id;
-    ArrayList<Integer> indices;
-    String media_url;
-    Long source_status_id;
-    String type;
+    public String display_url;
+    public Long id;
+    public ArrayList<Integer> indices;
+    public String media_url;
+    public Long source_status_id;
+    public String type;
 
     @Override
     public int describeContents() {
